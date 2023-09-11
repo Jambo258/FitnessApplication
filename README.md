@@ -1,4 +1,4 @@
-Fitness Application project done with Angular, Spring Boot and PostgreSQL where user needs to create an account and add healthData and TrainingData. After giving healthdata and trainingdata it is shown on the chart where user can follow progression. Project contains CRUD (Create, Read, Update, Delete) operations.
+Fitness Application project done with Angular, Spring Boot and PostgreSQL (which was supposed to be first a tictactoe application thats why frontend folder is named weird) where user needs to create an account and add healthData and TrainingData. After giving healthdata and trainingdata it is shown on the chart where user can follow progression. Project contains CRUD (Create, Read, Update, Delete) operations.
 
 Instructions
 
