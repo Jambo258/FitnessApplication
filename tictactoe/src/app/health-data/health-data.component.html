@@ -1,0 +1,121 @@
+<mat-card class="card">
+    <mat-card-title>Enter Health Data</mat-card-title>
+    <form [formGroup]="healthDataForm" (ngSubmit)="submitHealthData()">
+        <mat-form-field>
+            <input matInput placeholder="Height (m)" type="number" step="0.05" min="1.0" max="2.5" formControlName="height">
+        </mat-form-field>
+        <div *ngIf="healthDataForm.get('height')?.hasError('required') && healthDataForm.get('height')?.touched" class="error-message error-text">
+        Height is required.
+      </div>
+      <div *ngIf="healthDataForm.get('height')?.hasError('min') && healthDataForm.get('height')?.touched" class="error-message error-text">
+    Height must be greater than or equal to 0.
+  </div>
+  <div *ngIf="healthDataForm.get('height')?.hasError('max') && healthDataForm.get('height')?.touched" class="error-message error-text">
+    Height must be less than or equal to 2.5.
+  </div>
+        <!-- Add error messages here if needed -->
+
+        <mat-form-field>
+            <input matInput placeholder="Weight (kg)" type="number" step="0.5" min="20" formControlName="weight">
+        </mat-form-field>
+        <div *ngIf="healthDataForm.get('weight')?.hasError('required') && healthDataForm.get('weight')?.touched" class="error-message error-text">
+    Weight is required.
+  </div>
+  <div *ngIf="healthDataForm.get('weight')?.hasError('min') && healthDataForm.get('weight')?.touched" class="error-message error-text">
+    Weight must be greater than or equal to 0.
+  </div>
+  <div *ngIf="healthDataForm.get('weight')?.hasError('max') && healthDataForm.get('weight')?.touched" class="error-message error-text">
+    Weight must be less than or equal to 500.
+  </div>
+        <!-- Add error messages here if needed -->
+
+        <mat-form-field>
+            <input matInput placeholder="Target Weight (kg)" type="number" step="0.5" min="20" formControlName="targetWeight">
+        </mat-form-field>
+        <div *ngIf="healthDataForm.get('targetWeight')?.hasError('required') && healthDataForm.get('targetWeight')?.touched" class="error-message error-text">
+    Target Weight is required.
+  </div>
+  <div *ngIf="healthDataForm.get('targetWeight')?.hasError('min') && healthDataForm.get('targetWeight')?.touched" class="error-message error-text">
+    Target Weight must be greater than or equal to 0.
+  </div>
+  <div *ngIf="healthDataForm.get('targetWeight')?.hasError('max') && healthDataForm.get('targetWeight')?.touched" class="error-message error-text">
+    Target Weight must be less than or equal to 500.
+  </div>
+  <div *ngIf="targetcalories != null && targetweightvalue === weight">
+  <!-- Your alternative content here when targetweightvalue is equal to weight -->
+  <p class="error-text">Your target weight is same as current weight</p>
+</div>
+        <!-- Add error messages here if needed -->
+
+        <mat-form-field>
+            <input matInput placeholder="Target Calories (kCal/Day)" type="number" min="0" step="250" formControlName="targetCalories">
+        </mat-form-field>
+        <div *ngIf="healthDataForm.get('targetCalories')?.hasError('required') && healthDataForm.get('targetCalories')?.touched" class="error-message error-text">
+    Target Calories is required.
+  </div>
+  <div *ngIf="healthDataForm.get('targetCalories')?.hasError('min') && healthDataForm.get('targetCalories')?.touched" class="error-message error-text">
+    Target Calories must be greater than or equal to 0.
+  </div>
+  <div *ngIf="healthDataForm.get('targetCalories')?.hasError('max') && healthDataForm.get('targetCalories')?.touched" class="error-message error-text">
+    Target Calories must be less than or equal to 3500.
+  </div>
+        <!-- Add error messages here if needed -->
+
+        <mat-form-field>
+            <input matInput placeholder="Target Steps (Day)" type="number" min="0" step="250" formControlName="targetSteps">
+        </mat-form-field>
+        <div *ngIf="healthDataForm.get('targetSteps')?.hasError('required') && healthDataForm.get('targetSteps')?.touched" class="error-message error-text">
+    Target Steps is required.
+  </div>
+  <div *ngIf="healthDataForm.get('targetSteps')?.hasError('min') && healthDataForm.get('targetSteps')?.touched" class="error-message error-text">
+    Target Steps must be greater than or equal to 0.
+  </div>
+  <div *ngIf="healthDataForm.get('targetSteps')?.hasError('max') && healthDataForm.get('targetSteps')?.touched" class="error-message error-text">
+    Target Steps must be less than or equal to 100000.
+  </div>
+        <!-- Add error messages here if needed -->
+
+        <button mat-raised-button color="primary" type="submit" [disabled]="!healthDataForm.valid">Submit</button>
+        <!-- Add error messages or other messages here if needed -->
+        <p class="error-message">{{errorMessage}}</p>
+    </form>
+  <mat-card-content *ngIf="calories !== null && healthDataForm.get('height')?.valid && healthDataForm.get('weight')?.valid">
+    <mat-card class="calories-card">
+      <mat-card-content class="calories-content">
+        <p>Your estimated calorie consumption</p>
+      <p class="calories-details">(Height: {{ height }} m, Weight: {{ weight }} kg)</p>
+      <p class="calories-value">{{ calories }} kCal / Day</p>
+      </mat-card-content>
+    </mat-card>
+  </mat-card-content>
+  <mat-card-content *ngIf="targetcalories !== null && targetweightvalue != weight && healthDataForm.get('height')?.valid && healthDataForm.get('weight')?.valid && healthDataForm.get('targetWeight')?.valid">
+  <mat-card class="calories-card">
+    <mat-card-content class="calories-content">
+      <p>Your estimated calorie requirement for Target Weight</p>
+      <p class="calories-details">(Height: {{ height }} m, Target Weight: {{ targetweightvalue }} kg)</p>
+      <p class="calories-value">{{ targetcalories }} kCal / Day</p>
+      <p class="calories-subtext">Target Steps: {{ targetsteps }}</p>
+      <p class="calories-subtext">{{ loseWeightCalories !== null && loseWeightCalories > 0 ? 'You need to consume ' + loseWeightCalories + ' kCal / Day to get to target calories' : 'You need to gain ' + absoluteLoseWeightCalories + ' kCal / Day to get to target calories' }}</p>
+      <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 custom-table">
+      <!-- Define your columns -->
+      <ng-container matColumnDef="calories">
+        <th mat-header-cell *matHeaderCellDef> kCal / Day to target weight</th>
+        <td mat-cell *matCellDef="let element"> {{ element.caloriesData }} </td>
+      </ng-container>
+      <ng-container matColumnDef="duration">
+        <th mat-header-cell *matHeaderCellDef> Duration (Days) </th>
+        <td mat-cell *matCellDef="let element"> {{ element.durationData }} </td>
+      </ng-container>
+      <ng-container matColumnDef="steps">
+        <th mat-header-cell *matHeaderCellDef> Steps / Day </th>
+        <td mat-cell *matCellDef="let element"> {{ element.stepsData }} </td>
+      </ng-container>
+      <!-- Provide data source for MatTable -->
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+    </mat-card-content>
+  </mat-card>
+</mat-card-content>
+</mat-card>
+

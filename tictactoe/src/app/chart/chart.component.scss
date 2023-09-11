@@ -1,0 +1,30 @@
+.chart-container {
+  position: relative;
+  width: 50%; /* Set the width to 50% of the original size */
+  margin: 0 auto; /* Center the container horizontally */
+}
+
+.chart-container canvas {
+  display: block;
+  width: 100%;
+  height: auto; /* Maintain the aspect ratio */
+}
+
+.button-container {
+  display: flex;
+  flex-direction: column; /* This makes children stack vertically */
+  align-items: center;    /* This centers items horizontally */
+  text-align: center;     /* This centers text content horizontally */
+}
+
+.congratulations-card {
+  background-color: #f0f0f0;
+  border: 1px solid #ddd;
+  padding: 20px;
+  text-align: center;
+  margin: 20px;
+}
+
+.congratulations-card h2 {
+  color: limegreen;
+}

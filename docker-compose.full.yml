@@ -1,0 +1,54 @@
+version: '3.9'
+services:
+  db:
+    build:
+      context: ./database
+      dockerfile: Dockerfile
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: users
+    ports:
+      - "5432:5432"
+    restart: always
+    volumes:
+      - /var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "user", "-d", "users", "-h", "localhost", "-p", "5432"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+  api:
+    build:
+      context: ./project-api
+      dockerfile: Dockerfile
+    environment:
+      #DB_PORT: 5432
+      #DB_HOST: db
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/users
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: users
+    ports:
+      - "8080:8080"
+    restart: always
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - ./project-api:/usr/src/app
+  client:
+    build:
+      context: ./tictactoe
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - "80:80"
+    depends_on:
+      - api
+    environment:
+      CHOKIDAR_USEPOLLING: true
+      WATCHPACK_POLLING: true
+    volumes:
+      - ./tictactoe:/app/client
+      - /app/client/node_modules

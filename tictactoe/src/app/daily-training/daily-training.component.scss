@@ -1,0 +1,22 @@
+/* Apply custom styles to the card */
+.card {
+  margin: 20px;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Style the form elements */
+mat-form-field {
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+button {
+  margin-top: 10px;
+}
+
+.error-text {
+  color: red;
+}

@@ -1,0 +1,28 @@
+<div class="container">
+  <h1>Tic Tac Toe</h1>
+  <button (click)="setPlayerNames()">Set Player Names</button>
+  <h2 *ngIf="currentPlayer">{{currentPlayer==='X' ? playerXName : playerOName}} ({{ currentPlayer }})'s Turn</h2>
+
+  <div class="board">
+    <div
+      class="cell"
+      *ngFor="let cell of board; let i = index"
+      (click)="makeMove(i)"
+    >
+      {{ cell }}
+    </div>
+  </div>
+
+  <div class="status" *ngIf="isGameOver">
+    <div *ngIf="!winner">It's a draw!</div>
+    <div *ngIf="winner">{{winner}} Wins!</div>
+    <button (click)="restartGame()">Restart</button>
+  </div>
+
+  <div class="score">
+    <div class="score-x">{{ playerXName }} Score: {{ XScore }}</div>
+    <div class="score-o">{{ playerOName }} Score: {{ OScore }}</div>
+  </div>
+</div>
+
+

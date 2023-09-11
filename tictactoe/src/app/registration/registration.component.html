@@ -1,0 +1,46 @@
+<mat-card class="card">
+    <mat-card-title>Register</mat-card-title>
+    <form [formGroup]="registrationForm" (ngSubmit)="register()">
+        <mat-form-field>
+            <input matInput placeholder="Username" formControlName="username">
+        </mat-form-field>
+        <div *ngIf="registrationForm.get('username')?.hasError('required') && registrationForm.get('username')?.touched" class="error-message error-text">
+        Username is required.
+      </div>
+      <div *ngIf="registrationForm.get('username')?.hasError('minlength') && registrationForm.get('username')?.touched" class="error-message error-text">
+        Minimum length for username is 5 characters.
+      </div>
+        <mat-form-field>
+            <input matInput placeholder="Email" formControlName="email">
+        </mat-form-field>
+        <div *ngIf="registrationForm.get('email')?.hasError('required') && registrationForm.get('email')?.touched" class="error-message error-text">
+        Email is required.
+      </div>
+      <div *ngIf="registrationForm.get('email')?.hasError('email') && registrationForm.get('email')?.touched" class="error-message error-text">
+        Please enter a valid email address.
+      </div>
+        <mat-form-field>
+    <input matInput placeholder="Password" type="password" formControlName="password">
+</mat-form-field>
+<div *ngIf="registrationForm.get('password')?.hasError('required') && registrationForm.get('password')?.touched" class="error-message error-text">
+    Password is required.
+</div>
+<div *ngIf="registrationForm.get('password')?.hasError('minlength') && registrationForm.get('password')?.touched" class="error-message error-text">
+    Minimum length for password is 5 characters.
+</div>
+
+<mat-form-field>
+    <input matInput placeholder="ReType Password" type="password" formControlName="retypepassword">
+</mat-form-field>
+<div *ngIf="registrationForm.get('retypepassword')?.hasError('required') && registrationForm.get('retypepassword')?.touched" class="error-message error-text">
+    ReType Password is required.
+</div>
+<div *ngIf="registrationForm.hasError('passwordMismatch') && registrationForm.get('retypepassword')?.touched" class="error-message error-text">
+    Passwords do not match.
+</div>
+
+        <button mat-raised-button color="primary" type="submit" [disabled]="!registrationForm.valid">Register</button>
+        <p class="error-message">{{errorMessage}}</p>
+    </form>
+</mat-card>
+

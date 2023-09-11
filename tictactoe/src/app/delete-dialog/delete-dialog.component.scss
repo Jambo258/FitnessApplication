@@ -1,0 +1,7 @@
+@import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
+
+.mat-dialog-container {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}

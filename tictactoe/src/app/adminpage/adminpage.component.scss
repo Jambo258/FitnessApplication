@@ -1,0 +1,48 @@
+@import "~@angular/material/prebuilt-themes/deeppurple-amber.css";
+
+
+/* Apply some basic styles to the table */
+
+.mat-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #fff; /* Fallback color in case the theme variable isn't available */
+  //background-color: $mat-grey-50; /* You can adjust this color to match your desired background */
+}
+
+/* Style for the header row */
+.header-row {
+  background-color: #f5f5f5; /* Fallback color in case the theme variable isn't available */
+  font-weight: bold;
+}
+
+/* Apply some padding to cells */
+.mat-cell, .mat-header-cell {
+  padding: 10px;
+}
+
+/* Style for the edit and delete buttons */
+button.mat-icon-button {
+  padding: 5px;
+  width: auto;
+  min-width: auto;
+}
+
+/* Style for icons inside buttons */
+.mat-icon {
+  font-size: 18px;
+}
+
+/* Add shadow to the table */
+.mat-elevation-z8 {
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+
+
+.center-dialog {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}

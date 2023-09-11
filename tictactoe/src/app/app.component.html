@@ -1,0 +1,22 @@
+<mat-toolbar>
+    <a mat-button routerLink="/home">Home</a>
+    <ng-container *ngIf="isLoggedIn() && isRole() === 'admin'">
+    <a mat-button (click)="logout()">Logout</a>
+    <a mat-button routerLink="/adminpage">Adminpage</a>
+  </ng-container>
+  <ng-container *ngIf="isLoggedIn() && isRole() === 'guest'">
+    <a mat-button routerLink="/profilepage">Profile</a>
+    <a mat-button routerLink="/dailytraining">DailyTraining</a>
+    <a mat-button routerLink="/healthdata">HealthData</a>
+    <a mat-button (click)="logout()">Logout</a>
+    <a mat-button routerLink="/leaderboard">Leaderboard</a>
+    <a mat-button *ngIf="hasHealthData() === 'true'" routerLink="/chart">Chart</a>
+  </ng-container>
+  <ng-container *ngIf="!isLoggedIn()">
+    <a mat-button routerLink="/register">Register</a>
+    <a mat-button routerLink="/login">Login</a>
+  </ng-container>
+</mat-toolbar>
+
+<router-outlet></router-outlet>
+

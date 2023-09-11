@@ -1,0 +1,82 @@
+<mat-card>
+  <mat-card-title>Change Account Information</mat-card-title>
+  <mat-card-content>
+    <button mat-raised-button color="primary" *ngIf="!Editing['username'] && activeEditingSection === null"  (click)="startEditing('username')">Edit Username</button>
+    <button mat-raised-button color="primary" *ngIf="!Editing['email'] && activeEditingSection === null" (click)="startEditing('email')">Edit Email</button>
+    <button mat-raised-button color="primary" *ngIf="!Editing['password'] && activeEditingSection === null" (click)="startEditing('password')">Edit Password</button>
+
+    <div *ngIf="changeForm">
+    <form [formGroup]="changeForm" (ngSubmit)="updateUser(profileData.id)">
+      <mat-form-field *ngIf="Editing['username']">
+        <input matInput placeholder="Username" formControlName="username">
+      </mat-form-field>
+      <button mat-raised-button color="primary" *ngIf="Editing['username']" (click)="saveEditing('username', profileData.id)">Save</button>
+      <div *ngIf="changeForm.get('username')?.hasError('required') && changeForm.get('username')?.touched" class="error-message error-text">
+        Username is required.
+      </div>
+      <div *ngIf="changeForm.get('username')?.hasError('minlength') && changeForm.get('username')?.touched" class="error-message error-text">
+        Minimum length for username is 5 characters.
+      </div>
+
+      <mat-form-field *ngIf="Editing['email']">
+        <input matInput placeholder="Email" formControlName="email">
+      </mat-form-field>
+      <button mat-raised-button color="primary" *ngIf="Editing['email']" (click)="saveEditing('email', profileData.id)">Save</button>
+      <div *ngIf="changeForm.get('email')?.hasError('required') && changeForm.get('email')?.touched" class="error-message error-text">
+        Email is required.
+      </div>
+      <div *ngIf="changeForm.get('email')?.hasError('email') && changeForm.get('email')?.touched" class="error-message error-text">
+        Please enter a valid email address.
+      </div>
+      <mat-form-field *ngIf="Editing['password']">
+        <input matInput type="password" placeholder="New Password" formControlName="newPassword">
+      </mat-form-field>
+
+      <mat-form-field *ngIf="Editing['password']">
+        <input matInput type="password" placeholder="Confirm New Password" formControlName="confirmPassword">
+      </mat-form-field>
+      <button mat-raised-button color="primary" *ngIf="Editing['password']" (click)="saveEditing('password', profileData.id)">Save</button>
+
+      <div *ngIf="changeForm.get('newPassword')?.hasError('required') && changeForm.get('newPassword')?.touched" class="error-message error-text">
+    Password is required.
+</div>
+
+<div *ngIf="changeForm.get('newPassword')?.hasError('minlength') && changeForm.get('newPassword')?.touched" class="error-message error-text">
+    Minimum length for password is 5 characters.
+</div>
+<div *ngIf="changeForm.get('confirmPassword')?.hasError('required') && changeForm.get('confirmPassword')?.touched && !changeForm.get('confirmPassword')?.value" class="error-message error-text">
+    Confirm Password is required.
+</div>
+<div *ngIf="changeForm.hasError('passwordMismatch') && changeForm.get('confirmPassword')?.touched" class="error-message error-text">
+    Passwords do not match.
+</div>
+
+      <p class="error-message">{{ errorMessage }}</p>
+    </form>
+    </div>
+
+    <button mat-raised-button color="warn" (click)="deleteUser(profileData.id)">Delete Account</button>
+  </mat-card-content>
+</mat-card>
+
+<div class="center-container">
+  <mat-card class="user-profile">
+    <mat-card-header>
+      <mat-card-title>User Profile</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <p>Username: {{ profileData.username }}</p>
+      <p>Id: {{ profileData.id }}</p>
+      <p>Email: {{ profileData.email }}</p>
+      <p>Password: {{ profileData.password }}</p>
+      <p>Role: {{ profileData.role }}</p>
+    </mat-card-content>
+  </mat-card>
+</div>
+
+
+
+
+
+
+

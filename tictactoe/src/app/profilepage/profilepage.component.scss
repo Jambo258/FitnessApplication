@@ -1,0 +1,31 @@
+//@import "~@angular/material/prebuilt-themes/deeppurple-amber.css";
+
+.card {
+    width: 300px;
+    margin: auto;
+    padding: 20px;
+}
+.center-container {
+  display: flex;
+  align-items: center; /* Center vertically */
+  justify-content: center; /* Center horizontally */
+  height: 100vh; /* Ensure container covers the full viewport height */
+}
+.error-text {
+  color: red;
+}
+
+.user-profile {
+  background-color: #f0f0f0; /* Change the background color */
+  border: 1px solid #ccc; /* Add a border */
+  border-radius: 5px; /* Add border radius */
+  padding: 20px; /* Add padding */
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2); /* Add a shadow */
+}
+
+/* Style the card title */
+mat-card-title {
+  font-size: 20px; /* Change the font size */
+  color: #7d1414; /* Change the text color */
+}
+

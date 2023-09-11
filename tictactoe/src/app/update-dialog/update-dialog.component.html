@@ -1,0 +1,84 @@
+<h2 mat-dialog-title>Change User {{data.id}} Details</h2>
+<mat-dialog-content class ="mat-dialog-content">
+<form [formGroup]="form" (ngSubmit)="onSubmit(data.id)">
+  <div *ngIf="!isEditing['username']">
+    <p>Username: {{data.username}}</p>
+    <button mat-button color="primary" (click)="startEditing('username')">Edit</button>
+  </div>
+  <div *ngIf="isEditing['username']">
+    <mat-form-field>
+      <input matInput formControlName="username" placeholder="Username">
+    </mat-form-field>
+    <div *ngIf="form.get('username')?.hasError('required') && form.get('username')?.touched" class="error-message error-text">
+        Username is required.
+      </div>
+      <div *ngIf="form.get('username')?.hasError('minlength') && form.get('username')?.touched" class="error-message error-text">
+        Minimum length for username is 5 characters.
+      </div>
+    <button mat-button color="primary" (click)="saveEditing('username', data.id)">Save</button>
+    <button mat-button color="warn" (click)="cancelEditing('username')">Cancel</button>
+  </div>
+
+  <div *ngIf="!isEditing['email']">
+    <p>Email: {{data.email}}</p>
+    <button mat-button color="primary" (click)="startEditing('email')">Edit</button>
+  </div>
+  <div *ngIf="isEditing['email']">
+    <mat-form-field>
+      <input matInput formControlName="email" placeholder="Email">
+    </mat-form-field>
+    <p class="error-message error-text">{{errorMessage}}</p>
+    <div *ngIf="form.get('email')?.hasError('required') && form.get('email')?.touched" class="error-message error-text">
+        Email is required.
+      </div>
+      <div *ngIf="form.get('email')?.hasError('email') && form.get('email')?.touched" class="error-message error-text">
+        Please enter a valid email address.
+      </div>
+    <button mat-button color="primary" (click)="saveEditing('email', data.id)">Save</button>
+    <button mat-button color="warn" (click)="cancelEditing('email')">Cancel</button>
+  </div>
+
+  <div *ngIf="!isEditing['password']">
+    <p>Password: {{data.password}}</p>
+    <button mat-button color="primary" (click)="startEditing('password')">Edit</button>
+  </div>
+  <div *ngIf="isEditing['password']">
+    <mat-form-field>
+      <input matInput formControlName="password" placeholder="Password">
+    </mat-form-field>
+    <div *ngIf="form.get('password')?.hasError('required') && form.get('password')?.touched" class="error-message error-text">
+    Password is required.
+</div>
+<div *ngIf="form.get('password')?.hasError('minlength') && form.get('password')?.touched" class="error-message error-text">
+    Minimum length for password is 5 characters.
+</div>
+    <button mat-button color="primary" (click)="saveEditing('password', data.id)">Save</button>
+    <button mat-button color="warn" (click)="cancelEditing('password')">Cancel</button>
+  </div>
+
+  <div *ngIf="!isEditing['role']">
+    <p>Role: {{data.role}}</p>
+    <button mat-button color="primary" (click)="startEditing('role')">Edit</button>
+  </div>
+  <div *ngIf="isEditing['role']">
+    <div >
+      <mat-label class="selected-option">Select Role</mat-label>
+    </div>
+    <mat-form-field >
+    <mat-select formControlName="selectedOption" panelClass="custom-dropdown-panel">
+      <mat-option *ngFor="let option of dropdownOptions" [value]="option">{{ option }}</mat-option>
+    </mat-select>
+  </mat-form-field>
+    <button mat-button color="primary" (click)="saveEditing('role', data.id)">Save</button>
+    <button mat-button color="warn" (click)="cancelEditing('role')">Cancel</button>
+  </div>
+</form>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button mat-dialog-close color="primary" (click)="closeDialog()">Close</button>
+</mat-dialog-actions>
+
+
+
+
+

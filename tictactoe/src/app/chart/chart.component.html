@@ -1,0 +1,17 @@
+<div class="chart-container">
+  <canvas id="MyChart1"></canvas>
+  <canvas id="MyChart2"></canvas>
+  <canvas id="MyChart3"></canvas>
+  <div class="button-container" *ngIf="isAnyEqual">
+    <div class="congratulations-card">
+      <h2>Congratulations!</h2>
+      <p>You have achieved your goal.</p>
+      <button mat-raised-button color="limegreen" (click)="deleteUserTrainingAndHealthData(healthData.creator)">Delete Training Data & Health Status</button>
+    </div>
+</div>
+</div>
+
+
+
+
+

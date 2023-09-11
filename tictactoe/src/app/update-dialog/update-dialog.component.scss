@@ -1,0 +1,15 @@
+/* Apply custom styles to the dialog content */
+.dialog-content {
+  display: flex;
+  flex-direction: column;
+  width: 400px; /* Adjust the width as needed */
+  padding: 16px;
+}
+
+.error-text {
+  color: red;
+}
+
+
+
+

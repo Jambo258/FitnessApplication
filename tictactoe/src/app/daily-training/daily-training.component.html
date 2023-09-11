@@ -1,0 +1,48 @@
+
+<mat-card class="card">
+  <mat-card-title>Daily Training Input</mat-card-title>
+  <form [formGroup]="dailyInputForm">
+    <mat-form-field>
+      <input matInput type="number" placeholder="Daily Calories" step="100" min="500" formControlName="dailyCalories">
+    </mat-form-field>
+    <div *ngIf="dailyInputForm.get('dailyCalories')?.hasError('required') && dailyInputForm.get('dailyCalories')?.touched" class="error-message error-text">
+    Daily Calories is required.
+  </div>
+  <div *ngIf="dailyInputForm.get('dailyCalories')?.hasError('min') && dailyInputForm.get('dailyCalories')?.touched" class="error-message error-text">
+    Daily Calories must be greater than or equal to 0.
+  </div>
+  <div *ngIf="dailyInputForm.get('dailyCalories')?.hasError('max') && dailyInputForm.get('dailyCalories')?.touched" class="error-message error-text">
+    Target Calories must be less than or equal to 3500.
+  </div>
+
+    <mat-form-field>
+      <input matInput type="number" placeholder="Daily Steps" step="250" min="0" formControlName="dailySteps">
+    </mat-form-field>
+    <div *ngIf="dailyInputForm.get('dailySteps')?.hasError('required') && dailyInputForm.get('dailySteps')?.touched" class="error-message error-text">
+    Daily Steps is required.
+  </div>
+  <div *ngIf="dailyInputForm.get('dailySteps')?.hasError('min') && dailyInputForm.get('dailySteps')?.touched" class="error-message error-text">
+    Daily Steps must be greater than or equal to 0.
+  </div>
+  <div *ngIf="dailyInputForm.get('dailySteps')?.hasError('max') && dailyInputForm.get('dailySteps')?.touched" class="error-message error-text">
+    Daily Steps must be less than or equal to 100000.
+  </div>
+
+    <mat-form-field>
+      <input matInput type="number" placeholder="Current Weight (kg)" step="0.5" min="20" formControlName="currentWeight">
+    </mat-form-field>
+    <div *ngIf="dailyInputForm.get('currentWeight')?.hasError('required') && dailyInputForm.get('currentWeight')?.touched" class="error-message error-text">
+    Current Weight is required.
+  </div>
+  <div *ngIf="dailyInputForm.get('currentWeight')?.hasError('min') && dailyInputForm.get('currentWeight')?.touched" class="error-message error-text">
+    Current Weight must be greater than or equal to 0.
+  </div>
+  <div *ngIf="dailyInputForm.get('currentWeight')?.hasError('max') && dailyInputForm.get('currentWeight')?.touched" class="error-message error-text">
+    Current Weight must be less than or equal to 500.
+  </div>
+
+    <button mat-raised-button color="primary" [disabled]="!dailyInputForm.valid" (click)="submitTraining()">Submit</button>
+    <p class="error-message">{{errorMessage}}</p>
+  </form>
+</mat-card>
+

@@ -1,0 +1,24 @@
+<div class="leaderboard">
+  <h2 class="center-text">Weight Loss Leaderboard</h2>
+  <p class="center-text">Top users with the most weight loss during the specified time period:</p>
+
+  <mat-table [dataSource]="leaderboardData">
+    <ng-container matColumnDef="rank">
+      <mat-header-cell *matHeaderCellDef> Rank </mat-header-cell>
+      <mat-cell *matCellDef="let element; let i = index"> {{ i + 1 }} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="user">
+      <mat-header-cell *matHeaderCellDef> User </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{ element.name }} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="weightLoss">
+      <mat-header-cell *matHeaderCellDef> Weight Loss (lbs) </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{ element.weightLoss }} </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="['rank', 'user', 'weightLoss']"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: ['rank', 'user', 'weightLoss']"></mat-row>
+  </mat-table>
+</div>
