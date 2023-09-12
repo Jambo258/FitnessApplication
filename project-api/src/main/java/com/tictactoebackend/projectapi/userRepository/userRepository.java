@@ -1,6 +1,7 @@
 package com.tictactoebackend.projectapi.userRepository;
 
 import java.util.List;
+import java.util.Map;
 
 import com.tictactoebackend.projectapi.domain.user;
 import com.tictactoebackend.projectapi.exceptions.EtAuthException;
@@ -20,5 +21,7 @@ public interface userRepository {
     void updateUser(String id, String username, String email, String password, String role);
 
     void deleteUserById(String id) throws EtAuthException;
+    
+    List<Map<String, Object>> getAllUsersHealthAndTraining();
 
 }

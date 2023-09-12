@@ -22,7 +22,6 @@ export class MyApiServiceService {
   private backendUrlHealthStatus = 'http://localhost:8080/api/health';
   private backendUrlTraining = 'http://localhost:8080/api/training';
 
-
   healthData: HealthData = {
     height: 0,
     weight: 0,
@@ -67,6 +66,11 @@ export class MyApiServiceService {
 
   getAllUserData() {
     const url = `${this.backendUrlUsers}/getAll`;
+    return this.http.get<any>(url);
+  }
+
+  getAllUserDataCombined() {
+    const url = `${this.backendUrlUsers}/getAllUsersData`;
     return this.http.get<any>(url);
   }
 

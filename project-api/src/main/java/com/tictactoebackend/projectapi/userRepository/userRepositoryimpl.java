@@ -36,6 +36,9 @@ public class userRepositoryimpl implements userRepository{
     private static final String SQL_DELETE = "DELETE FROM public.users " +
                                           "WHERE id = ?";
 
+    private static final String SQL_GET_ALL_DATA = "SELECT h.*,u.*,d.* FROM users u JOIN health h ON h.creator = u.id JOIN dailytrainingandcalories d On d.creator = u.id where u.healthdata = true";
+
+
      @Autowired
      JdbcTemplate jdbcTemplate;
 
@@ -130,7 +133,6 @@ public void updateUser(String id, String username, String email, String password
     System.out.println("password"+ password);
     System.out.println("role" + role);
     System.out.println("id"+ id);
-    //String Role = "guest";
     try {
 
         jdbcTemplate.update(SQL_UPDATE, username, email, password, role, id);
@@ -156,6 +158,14 @@ public void deleteUserById(String id) throws EtAuthException {
         throw new EtAuthException("Failed to delete user." + e);
     }
 }
+//tutki
+@Override
+    public List<Map<String, Object>> getAllUsersHealthAndTraining(){
+       String sql = SQL_GET_ALL_DATA;
+
+        return jdbcTemplate.queryForList(sql);
+
+    }
 
 
 }

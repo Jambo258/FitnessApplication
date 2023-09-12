@@ -62,7 +62,7 @@ while (headerNames.hasMoreElements()) {
                     isAdmin = role.contains("admin");
                     }
 
-                    if (isAdmin || userId.equals(requestedUserIdData) || userId.equals(requestedUserIdUpdate) || userId.equals(requestedUserParam)) {
+                    if (isAdmin || userId.equals(requestedUserIdData) || userId.equals(requestedUserIdUpdate) || userId.equals(requestedUserParam) || userId != null && httpRequest.getMethod().equalsIgnoreCase("GET")) {
                     filterChain.doFilter(servletRequest, servletResponse);
                     } else {
                     httpResponse.sendError(HttpStatus.FORBIDDEN.value(), "Insufficient permissions");

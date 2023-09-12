@@ -376,4 +376,26 @@ public ResponseEntity<Map<String, Object>> deleteUserById(@PathVariable("userId"
     return true;
 }
 
+@GetMapping("/getAllUsersData")
+    public ResponseEntity<List<Map<String, Object>>> getAllUsersData() {
+        List<Map<String, Object>> userList = Userrepository.getAllUsersHealthAndTraining();
+        System.out.println(userList.get(0).toString());
+        List<Map<String, Object>> responseList = new ArrayList<>();
+        for (Map<String, Object> user : userList) {
+            Map<String, Object> userMap = new HashMap<>();
+            userMap.put("creator", user.get("creator"));
+            userMap.put("username", user.get("username"));
+            userMap.put("weight", user.get("weight"));
+            userMap.put("current_weight", user.get("current_weight"));
+            Double current_weight = (Double) user.get("current_weight");
+            Double weight = (Double) user.get("weight");
+            userMap.put("weight_difference", current_weight - weight);
+
+
+            responseList.add(userMap);
+        }
+
+        return new ResponseEntity<>(responseList, HttpStatus.OK);
+    }
+
 }
