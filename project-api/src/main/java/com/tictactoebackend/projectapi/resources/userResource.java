@@ -55,8 +55,6 @@ public class userResource {
 
     @PostMapping("/login")
     public ResponseEntity<?> loginUser(@RequestBody Map<String, Object> userMap) {
-        String email = (String) userMap.get("email");
-        String password = (String) userMap.get("password");
 
         List<String> missingFields = new ArrayList<>();
         List<String> unexpectedFields = new ArrayList<>();
@@ -74,15 +72,30 @@ public class userResource {
         }
     }
 
-        String emailValue = (String) userMap.get("email");
-            if (emailValue != null && !isValidEmail(emailValue)) {
-                missingFields.add("email must be in a valid email format");
-        }
+    Object emailValueObj = userMap.get("email");
+        if (emailValueObj != null) {
+            if (emailValueObj instanceof String) {
+                String emailValue = (String) emailValueObj;
+                if (emailValue != null && !isValidEmail(emailValue)) {
+                    missingFields.add("email must be in a valid email format");
+                }
+    } else {
+        unexpectedFields.add("email must be a string");
+    }
+}
 
-        String passwordValue = (String) userMap.get("password");
-            if (passwordValue != null && passwordValue.length() < 5) {
-                missingFields.add("password must have a minimum length of 5 characters");
-        }
+    Object passwordValueObj = userMap.get("password");
+        if (passwordValueObj != null) {
+            if (passwordValueObj instanceof String) {
+                String passwordValue = (String) passwordValueObj;
+                if (passwordValue.length() < 5) {
+                    missingFields.add("password must have a minimum length of 5 characters");
+                }
+    } else {
+        unexpectedFields.add("password must be a string");
+    }
+}
+
 
         if (!missingFields.isEmpty() || !unexpectedFields.isEmpty()) {
             Map<String, Object> errorResponse = new HashMap<>();
@@ -97,6 +110,9 @@ public class userResource {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
 
     }
+
+        String email = (String) userMap.get("email");
+        String password = (String) userMap.get("password");
 
 
         user User = Userservice.validateUser(email, password);
@@ -108,14 +124,6 @@ public class userResource {
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@RequestBody Map<String, Object> userMap){
 
-        String username = (String) userMap.get("username");
-        String id = (String) userMap.get("id");
-        System.out.println(id + "id");
-        String email = (String) userMap.get("email");
-        String password = (String) userMap.get("password");
-        String role = (String) userMap.get("role");
-        System.out.println(role + "role");
-
         List<String> missingFields = new ArrayList<>();
         List<String> unexpectedFields = new ArrayList<>();
 
@@ -124,6 +132,7 @@ public class userResource {
             if (!userMap.containsKey(requiredField) || userMap.get(requiredField) == null) {
                 missingFields.add(requiredField);
         }
+
     }
 
         for (String field : userMap.keySet()) {
@@ -132,20 +141,53 @@ public class userResource {
         }
     }
 
-        String roleValue = (String) userMap.get("role");
-            if (roleValue != null && !roleValue.equals("admin") && !roleValue.equals("guest")) {
-                missingFields.add("role must be either 'admin' or 'guest'");
-        }
+        Object usernameValueObj = userMap.get("username");
+        if (usernameValueObj != null) {
+            if (usernameValueObj instanceof String) {
+                String usernameValue = (String) usernameValueObj;
+                if (usernameValue != null && usernameValue.length() < 5) {
+                    missingFields.add("username must have a minimum length of 5 characters");
+                }
+    } else {
+        unexpectedFields.add("username must be a string");
+    }
+}
 
-        String emailValue = (String) userMap.get("email");
-            if (emailValue != null && !isValidEmail(emailValue)) {
-                missingFields.add("email must be in a valid email format");
-        }
+        Object roleValueObj = userMap.get("role");
+        if (roleValueObj != null) {
+            if (roleValueObj instanceof String) {
+                String roleValue = (String) roleValueObj;
+                if (roleValue != null && !roleValue.equals("admin") && !roleValue.equals("guest")) {
+                    missingFields.add("role must be either 'admin' or 'guest'");
+                }
+    } else {
+        unexpectedFields.add("role must be a string");
+    }
+}
 
-        String passwordValue = (String) userMap.get("password");
-            if (passwordValue != null && passwordValue.length() < 5) {
-                missingFields.add("password must have a minimum length of 5 characters");
-        }
+        Object emailValueObj = userMap.get("email");
+        if (emailValueObj != null) {
+            if (emailValueObj instanceof String) {
+                String emailValue = (String) emailValueObj;
+                if (emailValue != null && !isValidEmail(emailValue)) {
+                    missingFields.add("email must be in a valid email format");
+                }
+    } else {
+        unexpectedFields.add("email must be a string");
+    }
+}
+
+        Object passwordValueObj = userMap.get("password");
+        if (passwordValueObj != null) {
+            if (passwordValueObj instanceof String) {
+                String passwordValue = (String) passwordValueObj;
+                if (passwordValue.length() < 5) {
+                    missingFields.add("password must have a minimum length of 5 characters");
+                }
+    } else {
+        unexpectedFields.add("password must be a string");
+    }
+}
 
         if (!missingFields.isEmpty() || !unexpectedFields.isEmpty()) {
             Map<String, Object> errorResponse = new HashMap<>();
@@ -160,6 +202,13 @@ public class userResource {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
 
     }
+        String username = (String) userMap.get("username");
+        String id = (String) userMap.get("id");
+        System.out.println(id + "id");
+        String email = (String) userMap.get("email");
+        String password = (String) userMap.get("password");
+        String role = (String) userMap.get("role");
+        System.out.println(role + "role");
 
         user User = Userservice.registerUser(username,email,password,role);
 
@@ -214,17 +263,6 @@ public class userResource {
     public ResponseEntity<Map<String, Object>> updateUserById(@PathVariable("userId") String userId,
                                                           @RequestBody Map<String, Object> userMap) {
 
-        String username = (String) userMap.get("username");
-
-        System.out.println(userMap.toString() + "UserMap");
-        String id = (String) userMap.get("id");
-        System.out.println(userId + "UserId");
-        String email = (String) userMap.get("email");
-        String password = (String) userMap.get("password");
-        String role = (String) userMap.get("role");
-        System.out.println(role + "role");
-
-
         List<String> missingFields = new ArrayList<>();
         List<String> unexpectedFields = new ArrayList<>();
 
@@ -241,20 +279,53 @@ public class userResource {
         }
     }
 
-        String roleValue = (String) userMap.get("role");
-            if (roleValue != null && !roleValue.equals("admin") && !roleValue.equals("guest")) {
-                missingFields.add("role must be either 'admin' or 'guest'");
-        }
+    Object usernameValueObj = userMap.get("username");
+        if (usernameValueObj != null) {
+            if (usernameValueObj instanceof String) {
+                String usernameValue = (String) usernameValueObj;
+                if (usernameValue != null && usernameValue.length() < 5) {
+                    missingFields.add("username must have a minimum length of 5 characters");
+                }
+    } else {
+        unexpectedFields.add("username must be a string");
+    }
+}
 
-        String emailValue = (String) userMap.get("email");
-            if (emailValue != null && !isValidEmail(emailValue)) {
-                missingFields.add("email must be in a valid email format");
-        }
+        Object roleValueObj = userMap.get("role");
+        if (roleValueObj != null) {
+            if (roleValueObj instanceof String) {
+                String roleValue = (String) roleValueObj;
+                if (roleValue != null && !roleValue.equals("admin") && !roleValue.equals("guest")) {
+                    missingFields.add("role must be either 'admin' or 'guest'");
+                }
+    } else {
+        unexpectedFields.add("role must be a string");
+    }
+}
 
-        String passwordValue = (String) userMap.get("password");
-            if (passwordValue != null && passwordValue.length() < 5) {
-                missingFields.add("password must have a minimum length of 5 characters");
-        }
+        Object emailValueObj = userMap.get("email");
+        if (emailValueObj != null) {
+            if (emailValueObj instanceof String) {
+                String emailValue = (String) emailValueObj;
+                if (emailValue != null && !isValidEmail(emailValue)) {
+                    missingFields.add("email must be in a valid email format");
+                }
+    } else {
+        unexpectedFields.add("email must be a string");
+    }
+}
+
+        Object passwordValueObj = userMap.get("password");
+        if (passwordValueObj != null) {
+            if (passwordValueObj instanceof String) {
+                String passwordValue = (String) passwordValueObj;
+                if (passwordValue.length() < 5) {
+                    missingFields.add("password must have a minimum length of 5 characters");
+                }
+    } else {
+        unexpectedFields.add("password must be a string");
+    }
+}
 
         if (!missingFields.isEmpty() || !unexpectedFields.isEmpty()) {
             Map<String, Object> errorResponse = new HashMap<>();
@@ -267,6 +338,16 @@ public class userResource {
             }
             return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
+
+        String username = (String) userMap.get("username");
+
+        System.out.println(userMap.toString() + "UserMap");
+        String id = (String) userMap.get("id");
+        System.out.println(userId + "UserId");
+        String email = (String) userMap.get("email");
+        String password = (String) userMap.get("password");
+        String role = (String) userMap.get("role");
+        System.out.println(role + "role");
 
 
 

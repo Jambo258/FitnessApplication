@@ -26,7 +26,7 @@ spring.datasource.driver-class-name=org.postgresql.Driver
 ````
 cd project-api
 mvn clean install
-mvn spring-boot:run
+mvn spring-boot:run -P dev
 ````
 
 You can also run the entire application in docker by running following command in the project root

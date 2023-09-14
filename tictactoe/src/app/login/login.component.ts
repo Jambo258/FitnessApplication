@@ -42,7 +42,7 @@ export class LoginComponent {
         .pipe(
           catchError((error) => {
             // Handle the error here
-            this.errorMessage = error.error.message;
+            this.errorMessage = error.error.error;
             return throwError(() => error);
           })
         )

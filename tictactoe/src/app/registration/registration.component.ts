@@ -51,14 +51,14 @@ export class RegistrationComponent implements OnInit {
         password: this.registrationForm.get('password')?.value || '',
         role: 'guest',
       };
-      
+
       //console.log(formData);
       this.registrationService
         .registerUser(formData)
         .pipe(
           catchError((error) => {
             // Handle the error here
-            this.errorMessage = error.error.message;
+            this.errorMessage = error.error.error;
             return throwError(() => error);
           })
         )
