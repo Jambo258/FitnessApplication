@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 interface HealthData {
   height: Number,
@@ -18,9 +19,14 @@ interface TrainingData {
   providedIn: 'root',
 })
 export class MyApiServiceService {
-  private backendUrlUsers = 'http://localhost:8080/api/users';
-  private backendUrlHealthStatus = 'http://localhost:8080/api/health';
-  private backendUrlTraining = 'http://localhost:8080/api/training';
+  //private backendUrlUsers = 'http://localhost:8080/api/users';
+  //private backendUrlHealthStatus = 'http://localhost:8080/api/health';
+  //private backendUrlTraining = 'http://localhost:8080/api/training';
+
+  private backendUrlUsers = environment.backendUrlUsers;
+  private backendUrlHealthStatus = environment.backendUrlHealthStatus;
+  private backendUrlTraining = environment.backendUrlTraining;
+
 
   healthData: HealthData = {
     height: 0,

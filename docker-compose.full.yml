@@ -21,7 +21,7 @@ services:
   api:
     build:
       context: ./project-api
-      dockerfile: Dockerfile
+      dockerfile: local.Dockerfile
     environment:
       #DB_PORT: 5432
       #DB_HOST: db
