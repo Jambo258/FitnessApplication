@@ -1,3 +1,4 @@
+<ng-container *ngIf="usersData; else noData">
 <div class="leaderboard">
   <h2 class="center-text">Weight Loss Leaderboard</h2>
   <p class="center-text">Top users with the most weight loss:</p>
@@ -22,3 +23,10 @@
     <mat-row *matRowDef="let row; columns: ['rank', 'user', 'weightLoss']"></mat-row>
   </mat-table>
 </div>
+</ng-container>
+
+<ng-template #noData>
+  <div class="no-data-message">
+    <p class="center-text" style="font-size: 24px;">No leaderboard data</p>
+  </div>
+</ng-template>

@@ -22,7 +22,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 
-
+import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
@@ -94,6 +94,47 @@ public class UserTrainingDataEndpointTests {
 
     @Test
     @Order(1)
+    public void apiAddTrainingToUserWithoutValuesPOST() throws Exception {
+
+        String trainingData = "{"
+            + "\"currentWeight\": \"\","
+            + "\"dailySteps\": \"\","
+            + "\"dailyCalories\": \"\""
+            + "}";
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/training/"+ createdUserId + "/addtraining")
+               .header("Authorization", "Bearer " + authToken)
+               .contentType(MediaType.APPLICATION_JSON)
+               .content(trainingData))
+               .andExpect(status().isBadRequest())
+               .andExpect(MockMvcResultMatchers.jsonPath("$.error", is("Invalid request body fields")))
+               .andExpect(MockMvcResultMatchers.jsonPath("$.missingFields", containsInAnyOrder(
+                        "currentWeight value is null"
+                )))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.unexpectedFields", containsInAnyOrder(
+                        "dailyCalories must be an integer",
+                        "dailySteps must be an integer"
+                )));
+
+    }
+
+    @Test
+    @Order(2)
+    public void apiAddTrainingToUserWithWrongIdPOST() throws Exception {
+        String trainingData = "{"
+            + "\"currentWeight\": \"85.5\","
+            + "\"dailySteps\": 10000,"
+            + "\"dailyCalories\": 2500"
+            + "}";
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/training/123456789/addtraining")
+               .header("Authorization", "Bearer " + authToken)
+               .contentType(MediaType.APPLICATION_JSON)
+               .content(trainingData))
+               .andExpect(status().isNotFound())
+               .andExpect(content().json("{\"error\":\"Invalid userId\"}"));
+    }
+
+    @Test
+    @Order(3)
     public void apiAddTrainingToUserPOST() throws Exception {
         String trainingData = "{"
             + "\"currentWeight\": \"85.5\","
@@ -116,7 +157,33 @@ public class UserTrainingDataEndpointTests {
     }
 
     @Test
-    @Order(2)
+    @Order(4)
+    public void apiAddTrainingToUserOnceEveryDayOnlyPOST() throws Exception {
+        String trainingData = "{"
+            + "\"currentWeight\": \"85.5\","
+            + "\"dailySteps\": 10000,"
+            + "\"dailyCalories\": 2500"
+            + "}";
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/training/"+ createdUserId + "/addtraining")
+               .header("Authorization", "Bearer " + authToken)
+               .contentType(MediaType.APPLICATION_JSON)
+               .content(trainingData))
+               .andExpect(status().isTooManyRequests())
+               .andExpect(content().json("{\"error\":\"You can make another request in 23 hours.\"}"));
+
+    }
+
+    @Test
+    @Order(5)
+    public void apiGetUserAllTrainingsWithWrongIdGET() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/training/123456789/trainingdays")
+               .header("Authorization", "Bearer " + authToken))
+               .andExpect(status().isNotFound())
+               .andExpect(content().json("{\"error\":\"Invalid userId\"}"));
+    }
+
+    @Test
+    @Order(6)
     public void apiGetUserAllTrainingsGET() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/api/training/"+ createdUserId + "/trainingdays")
                .header("Authorization", "Bearer " + authToken))
@@ -125,7 +192,7 @@ public class UserTrainingDataEndpointTests {
     }
 
     @Test
-    @Order(3)
+    @Order(7)
     public void apiGetAllTrainingsGET() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/api/training/getAllTrainingDays")
                .header("Authorization", "Bearer " + authToken))
@@ -134,7 +201,17 @@ public class UserTrainingDataEndpointTests {
     }
 
     @Test
-    @Order(4)
+    @Order(8)
+    public void apiDeleteUserSingularTrainingWithFalseIdDELETE() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.delete("/api/training/123/delete")
+               .header("Authorization", "Bearer " + authToken))
+               .andExpect(status().isNotFound())
+               .andExpect(content().json("{\"error\":\"Invalid trainingId\"}"));
+
+    }
+
+    @Test
+    @Order(9)
     public void apiDeleteUserSingularTrainingDELETE() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.delete("/api/training/"+ trainingId + "/delete")
                .header("Authorization", "Bearer " + authToken))
@@ -143,7 +220,18 @@ public class UserTrainingDataEndpointTests {
     }
 
     @Test
-    @Order(5)
+    @Order(10)
+    public void apiDeleteUserAllTrainingsWrongIdDELETE() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.delete("/api/training/123456789/deleteall")
+               .header("Authorization", "Bearer " + authToken))
+               .andExpect(status().isNotFound())
+               .andExpect(content().json("{\"error\":\"nothing to delete\"}"));
+
+
+    }
+
+    @Test
+    @Order(11)
     public void apiDeleteUserAllTrainingsDELETE() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.delete("/api/training/"+ createdUserId + "/deleteall")
                .header("Authorization", "Bearer " + authToken))
@@ -153,12 +241,12 @@ public class UserTrainingDataEndpointTests {
     }
 
     @Test
-    @Order(6)
+    @Order(12)
     public void apiUsersDeleteByIdDELETE() throws Exception {
          mockMvc.perform(MockMvcRequestBuilders.delete("/api/users/id/"+ createdUserId + "/delete")
                .header("Authorization", "Bearer " + authToken))
                .andExpect(status().isOk());
-               
+
     }
 
 }

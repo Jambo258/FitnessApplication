@@ -25,7 +25,7 @@ spring.datasource.driver-class-name=org.postgresql.Driver
 
 ````
 cd project-api
-mvn clean install
+mvn clean install -P dev
 mvn spring-boot:run -P dev
 ````
 
@@ -33,6 +33,13 @@ You can also run the entire application in docker by running following command i
 ````
 docker-compose -f docker-compose.full.yml up
 ````
+
+Running tests (check that database container is running)
+````
+mvn test -P dev
+````
+
+Project is deployed on render.com platform and link to project is https://project-front-mfyj.onrender.com
 
 # Project Screenshots
 

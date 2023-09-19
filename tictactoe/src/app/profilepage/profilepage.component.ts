@@ -48,7 +48,7 @@ export class ProfilepageComponent implements OnInit, OnDestroy {
 
   constructor(
     private apiService: MyApiServiceService,
-    private authService: AuthenticationService, 
+    private authService: AuthenticationService,
     private router: Router,
     private formBuilder: FormBuilder,
     private dialog: MatDialog
@@ -206,7 +206,7 @@ export class ProfilepageComponent implements OnInit, OnDestroy {
         .pipe(
           catchError((error) => {
             console.error('Error updating user:', error);
-            this.errorMessage = error.error.message;
+            this.errorMessage = error.error.error;
             // Handle error, e.g., show an error message
             return throwError(() => error);
           })

@@ -49,6 +49,12 @@ public class healthResource {
         errorResponse.put("error", "User already has a health status");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
     }
+        user user = Userrepository.findById(userId);
+        if(user == null) {
+            Map<String, Object> errorResponse = new HashMap<>();
+            errorResponse.put("error", "Invalid userId");
+            return new ResponseEntity<>(errorResponse,HttpStatus.NOT_FOUND);
+        }
 
 
 
@@ -68,73 +74,85 @@ public class healthResource {
         }
     }
 
-        String height = (String) userHealthMap.get("height");
-        String weight = (String) userHealthMap.get("weight");
-        String targetWeight = (String) userHealthMap.get("targetWeight");
-        Integer targetCalories = null;
-        Integer targetSteps = null;
-
-        if (height != null) {
-    try {
-        double heightValue = Double.parseDouble(height);
-
-        if (heightValue <= 0 || heightValue > 2.5) {
-            missingFields.add("Height value is under zero or over 2.5 (meters)");
+    Object heightValueObj = userHealthMap.get("height");
+        if (heightValueObj != null) {
+            if (heightValueObj instanceof String) {
+                String heightValue = (String) heightValueObj;
+                if (heightValue != null && !heightValue.isEmpty()) {
+                    double height = Double.parseDouble(heightValue);
+                    if (height <= 0 || height > 2.5) {
+                        missingFields.add("Height value is under zero or over 2.5 (meters)");
+                    }
+                } else {
+                    missingFields.add("Height value is null");
+                }
+            } else {
+                unexpectedFields.add("Height must be a string");
+            }
         }
-    } catch (NumberFormatException e) {
-        missingFields.add("Invalid height value format");
-    }
-} else {
-    missingFields.add("Height value is missing");
-}
 
-        if (weight != null) {
-    try {
-        double weightValue = Double.parseDouble(weight);
-
-        if (weightValue <= 0 || weightValue > 500) {
-            missingFields.add("weight value is under zero or over 500(kg)");
+    Object weightValueObj = userHealthMap.get("weight");
+        if (weightValueObj != null) {
+            if (weightValueObj instanceof String) {
+                String weightValue = (String) weightValueObj;
+                if (weightValue != null && !weightValue.isEmpty()) {
+                    double weight = Double.parseDouble(weightValue);
+                    if (weight <= 0 || weight > 500) {
+                        missingFields.add("Weight value is under zero or over 500(kg)");
+                    }
+                } else {
+                    missingFields.add("Weight value is null");
+                }
+            } else {
+                unexpectedFields.add("Weight must be a string");
+            }
         }
-    } catch (NumberFormatException e) {
-        missingFields.add("Invalid weight value format");
-    }
-} else {
-    missingFields.add("Weight value is missing");
-}
 
-        if (targetWeight != null) {
-    try {
-        double targetWeightValue = Double.parseDouble(targetWeight);
-
-        if (targetWeightValue <= 0 || targetWeightValue > 500) {
-            missingFields.add("targetWeight value is under zero or over 500(kg)");
+    Object targetWeightValueObj = userHealthMap.get("targetWeight");
+        if (targetWeightValueObj != null) {
+            if (targetWeightValueObj instanceof String) {
+                String targetWeightValue = (String) targetWeightValueObj;
+                if (targetWeightValue != null && !targetWeightValue.isEmpty()) {
+                    double targetWeight = Double.parseDouble(targetWeightValue);
+                    if (targetWeight <= 0 || targetWeight > 500) {
+                        missingFields.add("targetWeight value is under zero or over 500(kg)");
+                    }
+                } else {
+                    missingFields.add("targetWeight value is null");
+                }
+            } else {
+                unexpectedFields.add("targetWeight must be a string");
+            }
         }
-    } catch (NumberFormatException e) {
-        missingFields.add("Invalid targetWeight value format");
-    }
-} else {
-    missingFields.add("targetWeight value is missing");
-}
 
-        if (!userHealthMap.containsKey("targetCalories")){
+    Object targetCaloriesValueObj = userHealthMap.get("targetCalories");
+        if (targetCaloriesValueObj != null) {
+            if (targetCaloriesValueObj instanceof Integer) {
+                Integer targetCaloriesValue = (Integer) targetCaloriesValueObj;
+                if (targetCaloriesValue != null) {
 
+                    if (targetCaloriesValue <= 0 || targetCaloriesValue > 3500) {
+                        missingFields.add("targetCalories cant be under zero or over 3500(kCal) / day");
+                    }
+                }
+            } else {
+                unexpectedFields.add("targetCalories must be an integer");
+            }
         }
-        else{
-        targetCalories = (Integer) userHealthMap.get("targetCalories");
-            if (targetCalories != null && targetCalories <= 0 || targetCalories > 3500) {
-                missingFields.add("target calories cant be under zero or over 3500(kCal) / day");
-        }
-    }
 
-        if (!userHealthMap.containsKey("targetSteps")){
-
+    Object targetStepsValueObj = userHealthMap.get("targetSteps");
+        if (targetStepsValueObj != null) {
+            if (targetStepsValueObj instanceof Integer) {
+                Integer targetStepsValue = (Integer) targetStepsValueObj;
+                if (targetStepsValue != null) {
+                    if (targetStepsValue <= 0 || targetStepsValue > 100000) {
+                        missingFields.add("targetSteps cant be under zero or over 100000 steps /day");
+                    }
+                }
+            } else {
+                unexpectedFields.add("targetSteps must be an integer");
+            }
         }
-        else{
-        targetSteps = (Integer) userHealthMap.get("targetSteps");
-            if (targetSteps != null && targetSteps <= 0 || targetSteps > 100000) {
-                missingFields.add("target steps cant be under zero or over 100000 steps /day ");
-        }
-    }
 
         if (!missingFields.isEmpty() || !unexpectedFields.isEmpty()) {
             Map<String, Object> errorResponse = new HashMap<>();
@@ -149,8 +167,11 @@ public class healthResource {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
 
     }
-
-
+            String height = (String) userHealthMap.get("height");
+            String weight = (String) userHealthMap.get("weight");
+            String targetWeight = (String) userHealthMap.get("targetWeight");
+            Integer targetCalories = (Integer) userHealthMap.get("targetCalories");
+            Integer targetSteps = (Integer) userHealthMap.get("targetSteps");
 
 
 

@@ -43,6 +43,13 @@ public class trainingResource {
 
         System.out.println(userTrainingMap.toString() + "UserTrainingMap");
 
+        user user = Userrepository.findById(userId);
+        if(user == null) {
+            Map<String, Object> errorResponse = new HashMap<>();
+            errorResponse.put("error", "Invalid userId");
+            return new ResponseEntity<>(errorResponse,HttpStatus.NOT_FOUND);
+        }
+
 
 
         List<String> missingFields = new ArrayList<>();
@@ -61,46 +68,51 @@ public class trainingResource {
         }
     }
 
-
-        //Double currentWeight = null;
-        String currentWeight = (String) userTrainingMap.get("currentWeight");
-        Integer dailyCalories = null;
-        Integer dailySteps = null;
-
-        if (currentWeight != null) {
-    try {
-        double currentWeightValue = Double.parseDouble(currentWeight);
-
-        if (currentWeightValue <= 0 || currentWeightValue > 500) {
-            missingFields.add("currentWeight value is under zero or over 500(kg)");
+        Object currentWeightValueObj = userTrainingMap.get("currentWeight");
+        if (currentWeightValueObj != null) {
+            if (currentWeightValueObj instanceof String) {
+                String currentWeightValue = (String) currentWeightValueObj;
+                if (currentWeightValue != null && !currentWeightValue.isEmpty()) {
+                    double currentWeight = Double.parseDouble(currentWeightValue);
+                    if (currentWeight <= 0 || currentWeight > 500) {
+                        missingFields.add("currentWeight value is under zero or over 500(kg)");
+                    }
+                } else {
+                    missingFields.add("currentWeight value is null");
+                }
+            } else {
+                unexpectedFields.add("currentWeight must be a string");
+            }
         }
-    } catch (NumberFormatException e) {
-        missingFields.add("Invalid currentWeight value format");
-    }
-} else {
-    missingFields.add("currentWeight value is missing");
-}
 
+    Object dailyCaloriesValueObj = userTrainingMap.get("dailyCalories");
+        if (dailyCaloriesValueObj != null) {
+            if (dailyCaloriesValueObj instanceof Integer) {
+                Integer dailyCaloriesValue = (Integer) dailyCaloriesValueObj;
+                if (dailyCaloriesValue != null) {
 
-        if (!userTrainingMap.containsKey("dailyCalories")){
-
+                    if (dailyCaloriesValue <= 0 || dailyCaloriesValue > 3500) {
+                        missingFields.add("dailyCalories cant be under zero or over 3500(kCal) / day to lose weight");
+                    }
+                }
+            } else {
+                unexpectedFields.add("dailyCalories must be an integer");
+            }
         }
-        else{
-        dailyCalories = (Integer) userTrainingMap.get("dailyCalories");
-            if (dailyCalories != null && dailyCalories <= 0 || dailyCalories > 3500) {
-                missingFields.add("daily calories cant be under zero or over 3500(kCal) / day to lose weight");
-        }
-    }
 
-        if (!userTrainingMap.containsKey("dailySteps")){
-
+    Object dailyStepsValueObj = userTrainingMap.get("dailySteps");
+        if (dailyStepsValueObj != null) {
+            if (dailyStepsValueObj instanceof Integer) {
+                Integer dailyStepsValue = (Integer) dailyStepsValueObj;
+                if (dailyStepsValue != null) {
+                    if (dailyStepsValue <= 0 || dailyStepsValue > 100000) {
+                        missingFields.add("dailySteps cant be under zero or over 100000 steps /day");
+                    }
+                }
+            } else {
+                unexpectedFields.add("dailySteps must be an integer");
+            }
         }
-        else{
-        dailySteps = (Integer) userTrainingMap.get("dailySteps");
-            if (dailySteps != null && dailySteps <= 0 || dailySteps > 100000) {
-                missingFields.add("daily steps cant be under zero or over 100000 steps /day ");
-        }
-    }
 
         if (!missingFields.isEmpty() || !unexpectedFields.isEmpty()) {
             Map<String, Object> errorResponse = new HashMap<>();
@@ -115,6 +127,9 @@ public class trainingResource {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
 
     }
+            String currentWeight = (String) userTrainingMap.get("currentWeight");
+            Integer dailyCalories = (Integer) userTrainingMap.get("dailyCalories");
+            Integer dailySteps = (Integer) userTrainingMap.get("dailySteps");
 
             List<Training> trainingList = trainingRepository.findUserTrainingDays(userId);
 
@@ -151,7 +166,6 @@ public class trainingResource {
             responseMap.put("created_at", training.getCreatedAt());
             responseMap.put("daily_calories", training.getDailyCalories());
             responseMap.put("daily_steps", training.getDailySteps());
-            // Add other properties if needed
 
             return new ResponseEntity<>(responseMap, HttpStatus.OK);
         }else {
@@ -168,6 +182,13 @@ public class trainingResource {
 
     @GetMapping("/{userId}/trainingdays")
     public ResponseEntity<?>getUserTrainingDays(@PathVariable("userId") String userId) {
+
+        user user = Userrepository.findById(userId);
+        if(user == null) {
+            Map<String, Object> errorResponse = new HashMap<>();
+            errorResponse.put("error", "Invalid userId");
+            return new ResponseEntity<>(errorResponse,HttpStatus.NOT_FOUND);
+        }
 
 
         System.out.println("UserId" + userId);
@@ -240,8 +261,8 @@ public ResponseEntity<Map<String, Object>> deleteAllTrainingsUserById(@PathVaria
     } catch (EtAuthException e) {
         // Handle authentication exception
         Map<String, Object> errorResponse = new HashMap<>();
-            errorResponse.put("error", "User health status not found for delete.");
-        //throw new EtAuthException("User health status not found for delete.");
+            errorResponse.put("error", "User training data not found for delete.");
+        //throw new EtAuthException("User training data not found for delete.");
         return new ResponseEntity<>(errorResponse,HttpStatus.BAD_REQUEST);
     }
 }
@@ -262,8 +283,8 @@ public ResponseEntity<Map<String, Object>> deleteTrainingById(@PathVariable("tra
     } catch (EtAuthException e) {
         // Handle authentication exception
         Map<String, Object> errorResponse = new HashMap<>();
-            errorResponse.put("error", "User health status not found for delete.");
-        //throw new EtAuthException("User health status not found for delete.");
+            errorResponse.put("error", "User training data not found for delete.");
+        //throw new EtAuthException("User training not found for delete.");
         return new ResponseEntity<>(errorResponse,HttpStatus.BAD_REQUEST);
     }
 }

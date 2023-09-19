@@ -158,7 +158,7 @@ public void deleteUserById(String id) throws EtAuthException {
         throw new EtAuthException("Failed to delete user." + e);
     }
 }
-//tutki
+
 @Override
     public List<Map<String, Object>> getAllUsersHealthAndTraining(){
        String sql = SQL_GET_ALL_DATA;

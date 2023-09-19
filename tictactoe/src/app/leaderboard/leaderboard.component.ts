@@ -21,7 +21,7 @@ export class LeaderboardComponent implements OnInit {
       .pipe(
         catchError((error) => {
           console.error('Error fetching data:', error);
-          this.errorMessage = error.error.message;
+          this.errorMessage = error.error.error;
 
           return throwError(() => error);
         })
@@ -37,7 +37,7 @@ export class LeaderboardComponent implements OnInit {
             (o:any) => o.id === obj.id && o.username === obj.username
           );
           if (item) {
-            
+
             if (item.weight_difference > obj.weight_difference) {
               item.weight_difference = obj.weight_difference;
             }

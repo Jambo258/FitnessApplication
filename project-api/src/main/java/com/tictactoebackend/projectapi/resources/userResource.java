@@ -458,9 +458,15 @@ public ResponseEntity<Map<String, Object>> deleteUserById(@PathVariable("userId"
 }
 
 @GetMapping("/getAllUsersData")
-    public ResponseEntity<List<Map<String, Object>>> getAllUsersData() {
+    public ResponseEntity<?> getAllUsersData() {
         List<Map<String, Object>> userList = Userrepository.getAllUsersHealthAndTraining();
-        System.out.println(userList.get(0).toString());
+        System.out.println(userList.isEmpty() + "empty?");
+        if (userList.isEmpty()) {
+        Map<String, String> errorResponse = new HashMap<>();
+        errorResponse.put("error", "No user data found.");
+        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+    }
+        //System.out.println(userList.get(0).toString());
         List<Map<String, Object>> responseList = new ArrayList<>();
         for (Map<String, Object> user : userList) {
             Map<String, Object> userMap = new HashMap<>();

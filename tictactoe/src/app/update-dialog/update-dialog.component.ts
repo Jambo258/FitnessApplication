@@ -100,9 +100,9 @@ export class UpdateDialogComponent {
           this.isEditing[this.editingControlName] = false;
         },
         error: (error) => {
-          this.errorMessage = error.error.message;
+          this.errorMessage = error.error.error;
           console.error('Error updating user on server:', error);
-          
+
         },
       });
     }

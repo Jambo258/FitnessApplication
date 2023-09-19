@@ -276,6 +276,56 @@ public class UserEndpointTests {
 
     @Test
     @Order(9)
+    public void apiUsersUpdateByIdWithoutValuesPUT() throws Exception {
+
+        String changeUserData = "{"
+            + "\"username\": \"\","
+            + "\"password\": \"\","
+            + "\"role\": \"\","
+            + "\"email\": \"\""
+            + "}";
+
+        mockMvc.perform(MockMvcRequestBuilders.put("/api/users/id/" + dummyUserId + "/update")
+                .header("Authorization", "Bearer " + dummyUserauthToken)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(changeUserData))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.error", is("Invalid request body fields")))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.missingFields", containsInAnyOrder(
+        "username must have a minimum length of 5 characters",
+                "role must be either 'admin' or 'guest'",
+                "email must be in a valid email format",
+                "password must have a minimum length of 5 characters"
+                )));
+}
+
+    @Test
+    @Order(10)
+    public void apiUsersUpdateByIdWithWrongTypeValuesPUT() throws Exception {
+
+        String changeUserData = "{"
+            + "\"username\": 12345,"
+            + "\"password\": 12345,"
+            + "\"role\": 1,"
+            + "\"email\": 12345"
+            + "}";
+
+        mockMvc.perform(MockMvcRequestBuilders.put("/api/users/id/" + dummyUserId + "/update")
+               .header("Authorization", "Bearer " + dummyUserauthToken)
+               .contentType(MediaType.APPLICATION_JSON)
+               .content(changeUserData))
+               .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.error", is("Invalid request body fields")))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.unexpectedFields", containsInAnyOrder(
+                        "username must be a string",
+                        "role must be a string",
+                        "password must be a string",
+                        "email must be a string"
+                )));
+}
+
+    @Test
+    @Order(11)
     public void registerUserWithoutValuesInRequestBodyPOST() throws Exception {
         String registrationData = "{"
             + "\"username\": \"\","
@@ -298,7 +348,7 @@ public class UserEndpointTests {
     }
 
     @Test
-    @Order(10)
+    @Order(12)
     public void registerUserWithWrongTypeValuesInRequestBodyPOST() throws Exception {
 
         String registrationData = "{"
@@ -321,7 +371,7 @@ public class UserEndpointTests {
     }
 
     @Test
-    @Order(11)
+    @Order(13)
     public void loginUserWithoutValuesRequestBodyPOST() throws Exception {
         String loginData = "{"
             + "\"password\": \"\","
@@ -339,7 +389,7 @@ public class UserEndpointTests {
     }
 
     @Test
-    @Order(12)
+    @Order(14)
     public void loginUserWithWrongTypeValuesRequestBodyPOST() throws Exception {
         String loginData = "{"
             + "\"password\": 12345,"
@@ -357,7 +407,7 @@ public class UserEndpointTests {
     }
 
     @Test
-    @Order(13)
+    @Order(15)
     public void deleteUserWithWrongIdDELETE() throws Exception {
          mockMvc.perform(MockMvcRequestBuilders.delete("/api/users/id/123456789/delete")
                .header("Authorization", "Bearer " + authToken))
@@ -366,7 +416,7 @@ public class UserEndpointTests {
     }
 
     @Test
-    @Order(14)
+    @Order(16)
     public void getUserWithWrongIdGET() throws Exception {
          mockMvc.perform(MockMvcRequestBuilders.get("/api/users/id/123456789")
                .header("Authorization", "Bearer " + authToken))
@@ -375,7 +425,7 @@ public class UserEndpointTests {
     }
 
     @Test
-    @Order(15)
+    @Order(17)
     public void updateUserWithoutTokenPUT() throws Exception {
 
         String changeUserData = "{"
@@ -398,8 +448,19 @@ public class UserEndpointTests {
 
 }
 
-@Test
-    @Order(16)
+    @Test
+    @Order(18)
+    public void getAllUsersDataWhenNoUserHealthDataOrUserTrainingDataExistsGET() throws Exception {
+         mockMvc.perform(MockMvcRequestBuilders.get("/api/users/getAllUsersData")
+               .header("Authorization", "Bearer " + authToken))
+               .andExpect(status().isNotFound())
+               .andExpect(content().json("{\"error\":\"No user data found.\"}"));
+
+
+    }
+
+    @Test
+    @Order(19)
     public void apiUsersDeleteDummyByIdDELETE() throws Exception {
          mockMvc.perform(MockMvcRequestBuilders.delete("/api/users/id/"+ dummyUserId + "/delete")
                .header("Authorization", "Bearer " + authToken))
