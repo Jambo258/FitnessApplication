@@ -13,6 +13,7 @@ export class HealthDataComponent {
   healthDataForm!: FormGroup;
   Id: string = '';
   errorMessage: string = '';
+  unexpectedFields: string[] = [];
   weight: number | null = null;
   calories: number | null = null;
   targetcalories: number | null = null;
@@ -46,15 +47,16 @@ export class HealthDataComponent {
         targetSteps: this.healthDataForm.get('targetSteps')?.value,
       };
 
-      console.log(formData);
+      //console.log(formData);
 
       this.healthDataService
         .addUserHealth(this.Id, formData)
         .pipe(
           catchError((error) => {
             // Handle the error here
-            console.log(error);
+            //console.log(error);
             this.errorMessage = error.error.error;
+            this.unexpectedFields = error.error.unexpectedFields;
             this.healthDataForm.reset({});
             return throwError(() => error);
           })
@@ -63,7 +65,9 @@ export class HealthDataComponent {
           // Handle success or errors
           localStorage.setItem('healthdata', 'true');
           this.healthDataForm.reset({});
-          console.log(response);
+          this.errorMessage = '';
+          this.unexpectedFields = [];
+          //console.log(response);
         });
     }
   }
@@ -72,19 +76,19 @@ export class HealthDataComponent {
     this.healthDataForm = this.formBuilder.group({
       height: [
         null,
-        [Validators.required, Validators.min(0), Validators.max(2.5)],
+        [Validators.required, Validators.min(1.0), Validators.max(2.5)],
       ],
       weight: [
         null,
-        [Validators.required, Validators.min(0), Validators.max(500)],
+        [Validators.required, Validators.min(1), Validators.max(500)],
       ],
       targetWeight: [
         null,
-        [Validators.required, Validators.min(0), Validators.max(500)],
+        [Validators.required, Validators.min(1), Validators.max(500)],
       ],
       targetCalories: [
         null,
-        [Validators.required, Validators.min(0), Validators.max(3500)],
+        [Validators.required, Validators.min(1), Validators.max(3500)],
       ],
       targetSteps: [
         null,
@@ -142,8 +146,6 @@ export class HealthDataComponent {
       );
       if (this.calories !== null && this.targetcalories !== null) {
         if (this.targetcalories >= this.calories) {
-          //const caloriesDifference = this.calories  this.targetcalories;
-          //this.calories = this.calories + this.targetcalories
           this.loseWeightCalories = -this.targetcalories + this.calories;
           this.absoluteLoseWeightCalories =
             this.loseWeightCalories !== null
@@ -151,41 +153,37 @@ export class HealthDataComponent {
               : 0;
           this.targetsteps = 0;
           this.loseCaloriesDuration = Math.round(
-            (7700 * (targetWeightValue - weightValue)) /
-            this.loseWeightCalories);
-            this.dataSource = [
-              {
-                caloriesData:
-                  Math.round(Math.abs(this.loseWeightCalories)) +
-                  this.calories,
-                durationData: Math.round(Math.abs(this.loseCaloriesDuration)),
-                stepsData: this.targetsteps,
-              },
-              {
-                caloriesData:
-                  Math.round(Math.abs(this.loseWeightCalories * 2)) +
-                  this.calories,
-                durationData: Math.round(
-                  Math.abs(this.loseCaloriesDuration / 2)
-                ),
-                stepsData: this.targetsteps,
-              },
-              {
-                caloriesData:
-                  Math.round(Math.abs(this.loseWeightCalories * 3)) +
-                  this.calories,
-                durationData: Math.round(
-                  Math.abs(this.loseCaloriesDuration / 3)
-                ),
-                stepsData: this.targetsteps,
-              },
-            ];
+            (7700 * (targetWeightValue - weightValue)) / this.loseWeightCalories
+          );
+          this.dataSource = [
+            {
+              caloriesData:
+                Math.round(Math.abs(this.loseWeightCalories)) + this.calories,
+              durationData: Math.round(Math.abs(this.loseCaloriesDuration)),
+              stepsData: this.targetsteps,
+            },
+            {
+              caloriesData:
+                Math.round(Math.abs(this.loseWeightCalories * 2)) +
+                this.calories,
+              durationData: Math.round(Math.abs(this.loseCaloriesDuration / 2)),
+              stepsData: this.targetsteps,
+            },
+            {
+              caloriesData:
+                Math.round(Math.abs(this.loseWeightCalories * 3)) +
+                this.calories,
+              durationData: Math.round(Math.abs(this.loseCaloriesDuration / 3)),
+              stepsData: this.targetsteps,
+            },
+          ];
         } else {
           this.loseWeightCalories = this.calories - this.targetcalories;
+          //console.log(this.loseWeightCalories)
           this.targetsteps = this.loseWeightCalories / 0.04;
           this.loseCaloriesDuration = Math.round(
-            (7700 * (weightValue - targetWeightValue)) /
-            this.loseWeightCalories);
+            (7700 * (weightValue - targetWeightValue)) / this.loseWeightCalories
+          );
           this.dataSource = [
             {
               caloriesData: this.calories - this.loseWeightCalories,
@@ -202,7 +200,6 @@ export class HealthDataComponent {
               durationData: Math.round(this.loseCaloriesDuration / 3),
               stepsData: this.targetsteps * 3,
             },
-
           ];
         }
       }

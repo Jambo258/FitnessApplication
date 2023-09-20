@@ -105,7 +105,7 @@ public class trainingResource {
             if (dailyStepsValueObj instanceof Integer) {
                 Integer dailyStepsValue = (Integer) dailyStepsValueObj;
                 if (dailyStepsValue != null) {
-                    if (dailyStepsValue <= 0 || dailyStepsValue > 100000) {
+                    if (dailyStepsValue < 0 || dailyStepsValue > 100000) {
                         missingFields.add("dailySteps cant be under zero or over 100000 steps /day");
                     }
                 }

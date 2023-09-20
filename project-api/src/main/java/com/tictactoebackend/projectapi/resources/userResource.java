@@ -466,7 +466,6 @@ public ResponseEntity<Map<String, Object>> deleteUserById(@PathVariable("userId"
         errorResponse.put("error", "No user data found.");
         return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
     }
-        //System.out.println(userList.get(0).toString());
         List<Map<String, Object>> responseList = new ArrayList<>();
         for (Map<String, Object> user : userList) {
             Map<String, Object> userMap = new HashMap<>();

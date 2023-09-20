@@ -145,7 +145,7 @@ public class healthResource {
             if (targetStepsValueObj instanceof Integer) {
                 Integer targetStepsValue = (Integer) targetStepsValueObj;
                 if (targetStepsValue != null) {
-                    if (targetStepsValue <= 0 || targetStepsValue > 100000) {
+                    if (targetStepsValue < 0 || targetStepsValue > 100000) {
                         missingFields.add("targetSteps cant be under zero or over 100000 steps /day");
                     }
                 }

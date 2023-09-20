@@ -64,25 +64,25 @@ export class ChartComponent implements OnInit, OnDestroy {
   ) {}
 
   createChart1() {
-    console.log(this.healthData);
-    console.log(this.trainingData);
+    //console.log(this.healthData);
+    //console.log(this.trainingData);
     const dailyCaloriesValue = this.trainingData.map(
       (data) => data.daily_calories
     );
-    console.log(dailyCaloriesValue);
+    //console.log(dailyCaloriesValue);
     const targetCaloriesValue = this.healthData.targetCalories;
     const numDates = this.trainingData.length;
 
     const targetCaloriesData = new Array(numDates).fill(targetCaloriesValue);
-    console.log(targetCaloriesData);
-    console.log(targetCaloriesValue);
+    //console.log(targetCaloriesData);
+    //console.log(targetCaloriesValue);
     const datesInMilliseconds = this.trainingData.map(
       (data) => data.created_at
     );
 
     const dates = datesInMilliseconds.map((data: any) => this.formatDate(data));
 
-    console.log(dates);
+    //console.log(dates);
     this.chart1 = new Chart('MyChart1', {
       type: 'line', //this denotes tha type of chart
 
@@ -153,23 +153,23 @@ export class ChartComponent implements OnInit, OnDestroy {
   }
 
   createChart2() {
-    console.log(this.healthData);
-    console.log(this.trainingData);
+    //console.log(this.healthData);
+    //console.log(this.trainingData);
     const dailyStepsValue = this.trainingData.map((data) => data.daily_steps);
-    console.log(dailyStepsValue);
+    //console.log(dailyStepsValue);
     const targetStepsValue = this.healthData.targetSteps;
     const numDates = this.trainingData.length;
 
     const targetStepsData = new Array(numDates).fill(targetStepsValue);
-    console.log(targetStepsData);
-    console.log(targetStepsValue);
+    //console.log(targetStepsData);
+    //console.log(targetStepsValue);
     const datesInMilliseconds = this.trainingData.map(
       (data) => data.created_at
     );
 
     const dates = datesInMilliseconds.map((data: any) => this.formatDate(data));
 
-    console.log(dates);
+    //console.log(dates);
     this.chart2 = new Chart('MyChart2', {
       type: 'line', //this denotes tha type of chart
 
@@ -240,18 +240,18 @@ export class ChartComponent implements OnInit, OnDestroy {
   }
 
   createChart3() {
-    console.log(this.healthData);
-    console.log(this.trainingData);
+    //console.log(this.healthData);
+    //console.log(this.trainingData);
     const dailyWeightValue = this.trainingData.map(
       (data) => data.current_weight
     );
-    console.log(dailyWeightValue);
+    //console.log(dailyWeightValue);
     const targetWeightValue = this.healthData.targetWeight;
     const numDates = this.trainingData.length;
 
     const targetWeightData = new Array(numDates).fill(targetWeightValue);
-    console.log(targetWeightData);
-    console.log(targetWeightValue);
+    //console.log(targetWeightData);
+    //console.log(targetWeightValue);
     const datesInMilliseconds = this.trainingData.map(
       (data) => data.created_at
     );
@@ -260,7 +260,7 @@ export class ChartComponent implements OnInit, OnDestroy {
 
 
     this.isAnyEqual = dailyWeightValue.some(
-      (weight) => weight === targetWeightValue
+      (weight) => weight <= targetWeightValue
     );
 
     if (this.isAnyEqual) {
@@ -269,7 +269,7 @@ export class ChartComponent implements OnInit, OnDestroy {
       );
     }
 
-    console.log(dates);
+    //console.log(dates);
     this.chart3 = new Chart('MyChart3', {
       type: 'line', //this denotes tha type of chart
 
@@ -341,16 +341,13 @@ export class ChartComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.Id = this.authService.getId();
-    console.log(this.Id, 'Id');
+    //console.log(this.Id, 'Id');
     this.userHealthDataSubscription = this.apiService
       .getUserHealthData(this.Id)
       .subscribe((userHealthData) => {
-        console.log(userHealthData);
+        //console.log(userHealthData);
         this.healthData = userHealthData[0];
-        //this.initializeForm();
         this.fetchTrainingDayData();
-        //this.createChart1();
-        //this.createChart2();
       });
   }
 
@@ -359,15 +356,12 @@ export class ChartComponent implements OnInit, OnDestroy {
     this.trainingDataSubscription = this.apiService
       .getUserTrainingDayData(this.Id)
       .subscribe((userTrainingData) => {
-        console.log(userTrainingData);
-        //this.healthData = userTrainingData;
+        //console.log(userTrainingData);
         this.trainingData = userTrainingData;
-        console.log(this.trainingData, 'is data here');
-        //this.initializeForm();
+        //console.log(this.trainingData, 'is data here');
         this.createChart1();
         this.createChart2();
         this.createChart3();
-        //this.fetchAdditionalData();
       });
   }
 
@@ -414,17 +408,16 @@ export class ChartComponent implements OnInit, OnDestroy {
           }
         }),
         catchError((error) => {
-          console.error('Error deleting user training and healthdata:', error);
+          //console.error('Error deleting user training and healthdata:', error);
           // Handle error, e.g., show an error message
           return throwError(() => error);
         })
       )
       .subscribe((response) => {
-        console.log('User Training and healthData deleted:', response);
+        //console.log('User Training and healthData deleted:', response);
         localStorage.setItem('healthdata', 'false');
         // Handle success, e.g., show a success message
         this.router.navigate(['/home']);
-        // Handle success, e.g., show a success message
       });
   }
 }

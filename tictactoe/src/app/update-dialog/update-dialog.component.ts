@@ -86,9 +86,9 @@ export class UpdateDialogComponent {
 
       this.apiService.UpdateUser(userId, updatedUserData).subscribe({
         next: (response) => {
-          console.log('User updated on server:', response);
+          //console.log('User updated on server:', response);
           //console.log('DataSource before update:', this.dataSource);
-          console.log('UserData' + updatedUserData);
+          //console.log('UserData' + updatedUserData);
           this.data.username = response.username;
           this.data.email = response.email;
           this.data.password = response.password;
@@ -101,7 +101,7 @@ export class UpdateDialogComponent {
         },
         error: (error) => {
           this.errorMessage = error.error.error;
-          console.error('Error updating user on server:', error);
+          //console.error('Error updating user on server:', error);
 
         },
       });

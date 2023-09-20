@@ -13,6 +13,7 @@ export class DailyTrainingComponent {
   dailyInputForm!: FormGroup;
   Id: string = '';
   errorMessage: string = '';
+  unexpectedFields: string[] = [];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -20,17 +21,15 @@ export class DailyTrainingComponent {
     private authService: AuthenticationService
   ) {}
 
-  
-
   ngOnInit() {
     this.dailyInputForm = this.formBuilder.group({
       currentWeight: [
         null,
-        [Validators.required, Validators.min(0), Validators.max(500)],
+        [Validators.required, Validators.min(1), Validators.max(500)],
       ],
       dailyCalories: [
         null,
-        [Validators.required, Validators.min(0), Validators.max(3500)],
+        [Validators.required, Validators.min(1), Validators.max(3500)],
       ],
       dailySteps: [
         null,
@@ -48,11 +47,10 @@ export class DailyTrainingComponent {
           this.dailyInputForm.get('currentWeight')?.value
         ).toFixed(1),
         dailyCalories: this.dailyInputForm.get('dailyCalories')?.value,
-        dailySteps: this.dailyInputForm.get('dailySteps')?.value
+        dailySteps: this.dailyInputForm.get('dailySteps')?.value,
       };
 
-      console.log(formData)
-
+      //console.log(formData)
 
       this.trainingDataService
         .addUserTrainingDay(this.Id, formData)
@@ -60,14 +58,16 @@ export class DailyTrainingComponent {
           catchError((error) => {
             // Handle the error here
             this.errorMessage = error.error.error;
-            this.dailyInputForm.reset({});
+            this.unexpectedFields = error.error.unexpectedFields;
             return throwError(() => error);
           })
         )
         .subscribe((response) => {
           // Handle success or errors
           this.dailyInputForm.reset({});
-          console.log(response);
+          //console.log(response);
+          this.errorMessage = '';
+          this.unexpectedFields = [];
         });
     }
   }

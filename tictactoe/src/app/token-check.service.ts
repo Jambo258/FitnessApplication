@@ -18,12 +18,12 @@ export class TokenCheckService {
   startTokenExpirationCheck(): void {
 
     this.tokenCheckInterval = interval(60000).subscribe(() => {
-      console.log('tarkistusväli')
+      //console.log('check between')
       if (this.authService.isTokenExpired()) {
-        console.log('Token has expired. Logging out...');
+        //console.log('Token has expired. Logging out...');
         this.authService.logout();
         this.router.navigate(['/home']);
-        this.stopTokenExpirationCheck(); 
+        this.stopTokenExpirationCheck();
       }
     });
   }

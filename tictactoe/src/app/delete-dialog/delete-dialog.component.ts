@@ -16,14 +16,8 @@ export class DeleteDialogComponent {
     @Inject(MAT_DIALOG_DATA) public data: { userId: string }
   ) {
     const dialogConfig = new MatDialogConfig();
-    //const centerX = window.innerWidth / 2;
-    //const centerY = window.innerHeight / 2;
     dialogConfig.autoFocus = false;
-    //dialogConfig.position = {};
     dialogConfig.position = {
-      //top: '50%',
-      //left: '50%',
-      //transform: 'translate(-50%, -50%)',
     };
     dialogRef.updatePosition(dialogConfig.position);
   }

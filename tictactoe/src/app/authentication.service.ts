@@ -57,14 +57,14 @@ export class AuthenticationService {
 
   getRole(): string {
     const token = localStorage.getItem('token');
-    console.log('token', token);
+    //console.log('token', token);
 
     if (token) {
 
       const decodedToken = this.jwtHelper.decodeToken(token);
 
       if (decodedToken) {
-        console.log('Decoded token:', decodedToken);
+        //console.log('Decoded token:', decodedToken);
         return decodedToken.role || '';
       }
     }
@@ -80,7 +80,7 @@ export class AuthenticationService {
       const decodedToken = this.jwtHelper.decodeToken(token);
 
       if (decodedToken) {
-        console.log('Decoded token:', decodedToken);
+        //console.log('Decoded token:', decodedToken);
         return decodedToken.id || '';
       }
     }

@@ -20,17 +20,17 @@ export class LeaderboardComponent implements OnInit {
       .getAllUserDataCombined()
       .pipe(
         catchError((error) => {
-          console.error('Error fetching data:', error);
+          //console.error('Error fetching data:', error);
           this.errorMessage = error.error.error;
 
           return throwError(() => error);
         })
       )
       .subscribe((response) => {
-        console.log('fetched data:', response);
+        //console.log('fetched data:', response);
 
         this.userDataArray = response;
-        console.log(this.userDataArray);
+        //console.log(this.userDataArray);
 
         this.userDataArray.forEach((obj: any) => {
           const item = this.arrayFiltered.find(
@@ -51,8 +51,8 @@ export class LeaderboardComponent implements OnInit {
           (a: any, b: any) => a.weight_difference - b.weight_difference
         );
 
-        console.log(this.arrayFiltered);
-        console.log(this.userDataArray);
+        //console.log(this.arrayFiltered);
+        //console.log(this.userDataArray);
         this.usersData = new MatTableDataSource(this.arrayFiltered);
       });
   }

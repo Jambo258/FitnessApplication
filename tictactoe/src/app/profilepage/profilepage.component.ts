@@ -63,7 +63,7 @@ export class ProfilepageComponent implements OnInit, OnDestroy {
     this.userDataSubscription = this.apiService
       .getUserData(this.Id)
       .subscribe((userData) => {
-        console.log(userData);
+        //console.log(userData);
         this.profileData = userData;
         this.initializeForm();
 
@@ -122,19 +122,19 @@ export class ProfilepageComponent implements OnInit, OnDestroy {
       this.changeForm.get('confirmPassword')?.updateValueAndValidity();
 
       if (!newPasswordValue || !confirmPasswordValue) {
-        console.log('Values are empty');
+        //console.log('Values are empty');
         return;
       }
 
       if(!newPasswordControl?.valid || !confirmPasswordControl?.valid){
-        console.log('valid?')
+        //console.log('valid?')
         //this.Editing[field] = true;
         //this.activeEditingSection = null;
         return;
       }
     }
 
-    console.log(this.changeForm.value, 'value')
+    //console.log(this.changeForm.value, 'value')
 
     if (formControl && formControl.valid) {
       this.updateUser(userId);
@@ -155,30 +155,30 @@ export class ProfilepageComponent implements OnInit, OnDestroy {
   }
 
   updateUser(userId: string) {
-    console.log(this.activeEditingSection + 'section');
+    //console.log(this.activeEditingSection + 'section');
 
-    console.log(this.changeForm.value);
+    //console.log(this.changeForm.value);
 
 
     if (
       this.changeForm.value.newPassword === '' &&
       this.changeForm.value.confirmPassword === '' && this.activeEditingSection !== 'password'
     ) {
-      console.log('show up in here?');
+      //console.log('show up in here?');
       this.changeForm.get('newPassword')?.clearValidators();
       this.changeForm.get('newPassword')?.updateValueAndValidity();
       this.changeForm.get('confirmPassword')?.clearValidators();
       this.changeForm.get('confirmPassword')?.updateValueAndValidity();
-      console.log(this.changeForm.valid, 'is valid?');
+      //console.log(this.changeForm.valid, 'is valid?');
     }
 
 
-    console.log(this.changeForm.valid, 'isvalid?');
+    //console.log(this.changeForm.valid, 'isvalid?');
     if (this.changeForm.valid) {
       //const changedData = this.changeForm.value;
       let updatedUserData;
-      console.log(this.changeForm.value);
-      console.log(this.profileData.password);
+      //console.log(this.changeForm.value);
+      //console.log(this.profileData.password);
       if (
 
         this.activeEditingSection !== 'password'
@@ -198,21 +198,21 @@ export class ProfilepageComponent implements OnInit, OnDestroy {
         };
       }
 
-      console.log(updatedUserData.password, 'password');
+      //console.log(updatedUserData.password, 'password');
 
 
       this.apiService
         .UpdateUser(userId, updatedUserData)
         .pipe(
           catchError((error) => {
-            console.error('Error updating user:', error);
+            //console.error('Error updating user:', error);
             this.errorMessage = error.error.error;
             // Handle error, e.g., show an error message
             return throwError(() => error);
           })
         )
         .subscribe((response) => {
-          console.log('User updated:', response);
+          //console.log('User updated:', response);
           // Handle success, e.g., show a success message
           this.profileData.username = response.username;
           this.profileData.email = response.email;
@@ -240,17 +240,16 @@ export class ProfilepageComponent implements OnInit, OnDestroy {
           }
         }),
         catchError((error) => {
-          console.error('Error deleting user:', error);
+          //console.error('Error deleting user:', error);
           // Handle error, e.g., show an error message
           return throwError(() => error);
         })
       )
       .subscribe((response) => {
-        console.log('User deleted:', response);
+        //console.log('User deleted:', response);
         // Handle success, e.g., show a success message
         this.authService.logout();
         this.router.navigate(['/home']);
-        // Handle success, e.g., show a success message
       });
   }
 }

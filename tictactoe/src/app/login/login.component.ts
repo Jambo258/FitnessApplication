@@ -36,7 +36,7 @@ export class LoginComponent {
   login() {
     if (this.loginForm.valid) {
       const formData = this.loginForm.value;
-      console.log(formData);
+      //console.log(formData);
       this.registrationService
         .loginUser(formData)
         .pipe(
@@ -49,14 +49,14 @@ export class LoginComponent {
         .subscribe((response) => {
           const loginResponse = response as LoginResponse;
           // Handle success
-          console.log(loginResponse);
-          console.log(loginResponse.token);
+          //console.log(loginResponse);
+          //console.log(loginResponse.token);
           const decodedToken = this.jwtHelper.decodeToken(loginResponse.token);
 
           if (decodedToken) {
-            console.log('Decoded token:', decodedToken);
+            //console.log('Decoded token:', decodedToken);
           }
-          console.log(decodedToken.exp + 'logatessa aika');
+          //console.log(decodedToken.exp + 'login time');
           localStorage.setItem('token', loginResponse.token);
           localStorage.setItem('healthdata', decodedToken.healthdata);
           localStorage.setItem('tokenExpiration', decodedToken.exp.toString());

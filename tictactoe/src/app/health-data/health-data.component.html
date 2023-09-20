@@ -8,38 +8,38 @@
         Height is required.
       </div>
       <div *ngIf="healthDataForm.get('height')?.hasError('min') && healthDataForm.get('height')?.touched" class="error-message error-text">
-    Height must be greater than or equal to 0.
+    Height must be greater than or equal to 1.0(m).
   </div>
   <div *ngIf="healthDataForm.get('height')?.hasError('max') && healthDataForm.get('height')?.touched" class="error-message error-text">
-    Height must be less than or equal to 2.5.
+    Height must be less than or equal to 2.5(m).
   </div>
         <!-- Add error messages here if needed -->
 
         <mat-form-field>
-            <input matInput placeholder="Weight (kg)" type="number" step="0.5" min="20" formControlName="weight">
+            <input matInput placeholder="Weight (kg)" type="number" step="0.5" min="1" formControlName="weight">
         </mat-form-field>
         <div *ngIf="healthDataForm.get('weight')?.hasError('required') && healthDataForm.get('weight')?.touched" class="error-message error-text">
     Weight is required.
   </div>
   <div *ngIf="healthDataForm.get('weight')?.hasError('min') && healthDataForm.get('weight')?.touched" class="error-message error-text">
-    Weight must be greater than or equal to 0.
+    Weight must be greater than or equal to 1(kg).
   </div>
   <div *ngIf="healthDataForm.get('weight')?.hasError('max') && healthDataForm.get('weight')?.touched" class="error-message error-text">
-    Weight must be less than or equal to 500.
+    Weight must be less than or equal to 500(kg).
   </div>
         <!-- Add error messages here if needed -->
 
         <mat-form-field>
-            <input matInput placeholder="Target Weight (kg)" type="number" step="0.5" min="20" formControlName="targetWeight">
+            <input matInput placeholder="Target Weight (kg)" type="number" step="0.5" min="1" formControlName="targetWeight">
         </mat-form-field>
         <div *ngIf="healthDataForm.get('targetWeight')?.hasError('required') && healthDataForm.get('targetWeight')?.touched" class="error-message error-text">
     Target Weight is required.
   </div>
   <div *ngIf="healthDataForm.get('targetWeight')?.hasError('min') && healthDataForm.get('targetWeight')?.touched" class="error-message error-text">
-    Target Weight must be greater than or equal to 0.
+    Target Weight must be greater than or equal to 1(kg).
   </div>
   <div *ngIf="healthDataForm.get('targetWeight')?.hasError('max') && healthDataForm.get('targetWeight')?.touched" class="error-message error-text">
-    Target Weight must be less than or equal to 500.
+    Target Weight must be less than or equal to 500(kg).
   </div>
   <div *ngIf="targetcalories != null && targetweightvalue === weight">
   <!-- Your alternative content here when targetweightvalue is equal to weight -->
@@ -48,16 +48,16 @@
         <!-- Add error messages here if needed -->
 
         <mat-form-field>
-            <input matInput placeholder="Target Calories (kCal/Day)" type="number" min="0" step="250" formControlName="targetCalories">
+            <input matInput placeholder="Target Calories (kCal/Day)" type="number" min="1" step="250" formControlName="targetCalories">
         </mat-form-field>
         <div *ngIf="healthDataForm.get('targetCalories')?.hasError('required') && healthDataForm.get('targetCalories')?.touched" class="error-message error-text">
     Target Calories is required.
   </div>
   <div *ngIf="healthDataForm.get('targetCalories')?.hasError('min') && healthDataForm.get('targetCalories')?.touched" class="error-message error-text">
-    Target Calories must be greater than or equal to 0.
+    Target Calories must be greater than or equal to 1kCal.
   </div>
   <div *ngIf="healthDataForm.get('targetCalories')?.hasError('max') && healthDataForm.get('targetCalories')?.touched" class="error-message error-text">
-    Target Calories must be less than or equal to 3500.
+    Target Calories must be less than or equal to 3500kCal.
   </div>
         <!-- Add error messages here if needed -->
 
@@ -77,7 +77,17 @@
 
         <button mat-raised-button color="primary" type="submit" [disabled]="!healthDataForm.valid">Submit</button>
         <!-- Add error messages or other messages here if needed -->
-        <p class="error-message">{{errorMessage}}</p>
+    <mat-card class="error-text" *ngIf="unexpectedFields && unexpectedFields.length > 0 || errorMessage">
+      <mat-card-header>
+        <mat-card-title>Errors:</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <mat-list>
+          <mat-list-item ><p class="error-text">{{errorMessage}}</p></mat-list-item>
+          <mat-list-item *ngFor="let errorMessage of unexpectedFields"><p class="error-text">{{ errorMessage }}</p></mat-list-item>
+        </mat-list>
+      </mat-card-content>
+    </mat-card>
     </form>
   <mat-card-content *ngIf="calories !== null && healthDataForm.get('height')?.valid && healthDataForm.get('weight')?.valid">
     <mat-card class="calories-card">

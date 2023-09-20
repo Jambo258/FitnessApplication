@@ -43,10 +43,10 @@ export class AdminpageComponent implements OnInit {
 
       dialogRef.componentInstance.saveClicked.subscribe((response: any) => {
         // Handle the response data here
-        console.log('Received response:', response);
+        //console.log('Received response:', response);
 
         this.dataSource = this.dataSource.map((dataSourceUser: any) => {
-          console.log(response.id + '||' + dataSourceUser.id);
+          //console.log(response.id + '||' + dataSourceUser.id);
           if (dataSourceUser.id === response.id) {
             return { ...dataSourceUser, ...response };
           }
@@ -58,7 +58,7 @@ export class AdminpageComponent implements OnInit {
 
       dialogRef.afterClosed().subscribe((result) => {
         this.isDialogOpen = false;
-        console.log(`Dialog result: ${result}`);
+        //console.log(`Dialog result: ${result}`);
       });
 
     }
@@ -82,13 +82,13 @@ export class AdminpageComponent implements OnInit {
           }
         }),
         catchError((error) => {
-          console.error('Error deleting user:', error);
+          //console.error('Error deleting user:', error);
           // Handle error, e.g., show an error message
           return throwError(() => error);
         })
       )
       .subscribe((response) => {
-        console.log('User deleted:', response);
+        //console.log('User deleted:', response);
         this.dataSource = this.dataSource.filter(
           (user: any) => user.id !== userId
         );

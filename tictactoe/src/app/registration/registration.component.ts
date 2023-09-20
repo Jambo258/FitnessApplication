@@ -64,11 +64,11 @@ export class RegistrationComponent implements OnInit {
         )
         .subscribe((response) => {
           // Handle success or errors
-          console.log(response.token);
+          //console.log(response.token);
           const decodedToken = this.jwtHelper.decodeToken(response.token);
 
           if (decodedToken) {
-            console.log('Decoded token:', decodedToken);
+            //console.log('Decoded token:', decodedToken);
           }
           localStorage.setItem('token', response.token);
           localStorage.setItem('healthdata', decodedToken.healthdata);

@@ -19,7 +19,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatInputModule } from '@angular/material/input';
 import { JwtModule } from '@auth0/angular-jwt';
 import { AuthenticationService } from './authentication.service';
-import { TokenCheckService } from './token-check.service';
+import { MatListModule } from '@angular/material/list';
 import { AdminpageComponent } from './adminpage/adminpage.component';
 import { ProfilepageComponent } from './profilepage/profilepage.component';
 import { AuthInterceptor } from './auth-interceptor.service';
@@ -56,6 +56,7 @@ export function tokenGetter() {
   ],
   imports: [
     BrowserModule,
+    MatListModule,
     NgChartsModule,
     MatDialogModule,
     AppRoutingModule,
@@ -82,7 +83,7 @@ export function tokenGetter() {
   providers: [
     MyApiServiceService,
     AuthenticationService,
-    
+
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
