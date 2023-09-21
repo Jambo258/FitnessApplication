@@ -34,9 +34,29 @@ You can also run the entire application in docker by running following command i
 docker-compose -f docker-compose.full.yml up
 ````
 
-Running tests (check that database container is running)
+Running backend tests (check that database container is running)
 ````
 mvn test -P dev
+````
+
+Running end to end tests (check you have database container running, backend running and frontend running)
+in the project root
+````
+docker compose up
+````
+start backend
+````
+cd project-api
+mvn spring-boot:run -P dev
+````
+start frontend
+````
+cd tictactoe
+npm run start
+````
+after all those run end to end tests in the frontend folder
+````
+npm run cypress:open
 ````
 
 Project is deployed on render.com platform and link to project is https://project-front-mfyj.onrender.com

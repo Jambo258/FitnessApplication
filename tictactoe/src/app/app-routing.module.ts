@@ -38,8 +38,8 @@ const routes: Routes = [
     canActivate: [RoleGuardService],
   },
   { path: 'dailytraining', component: DailyTrainingComponent, canActivate: [RoleGuardService] },
-  { path: '', redirectTo: '/login', pathMatch: 'full' },
-  { path: '**', redirectTo: '/login' },
+  { path: '', redirectTo: '/home', pathMatch: 'full' },
+  { path: '**', redirectTo: '/home' },
 ];
 
 @NgModule({

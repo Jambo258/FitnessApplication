@@ -29,11 +29,11 @@
     <td mat-cell *matCellDef="let user">
 
       <button class="mat-icon-button" (click)="updateUser(user)" [disabled]="isDialogOpen">
-        Edit {{user.id}}
+        Edit {{user.username}}
       </button>
 
       <button class="mat-icon-button" (click)="deleteUser(user.id)" [disabled]="isDialogOpen">
-  Delete {{user.id}}
+  Delete {{user.username}}
 </button>
 
     </td>

@@ -41,7 +41,7 @@
     Current Weight must be less than or equal to 500(kg).
   </div>
 
-    <button mat-raised-button color="primary" [disabled]="!dailyInputForm.valid" (click)="submitTraining()">Submit</button>
+    <button mat-raised-button color="primary" [disabled]="!dailyInputForm.valid" (click)="submitTraining()" id="submit-button">Submit</button>
     <mat-card class="error-text"*ngIf="unexpectedFields && unexpectedFields.length > 0 || errorMessage">
       <mat-card-header>
         <mat-card-title>Errors:</mat-card-title>

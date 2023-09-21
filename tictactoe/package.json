@@ -9,6 +9,7 @@
     "start": "nx serve",
     "start_docker": "nx serve --host=0.0.0.0 --port=80",
     "build": "nx build",
+    "cypress:open": "cypress open",
     "watch": "nx build --watch --configuration development",
     "test": "nx test"
   },
@@ -40,6 +41,7 @@
     "@nx/workspace": "16.6.0",
     "@schematics/angular": "~16.1.8",
     "@types/jasmine": "~4.3.0",
+    "cypress": "^12.17.4",
     "jasmine-core": "~4.6.0",
     "karma": "~6.4.0",
     "karma-chrome-launcher": "~3.2.0",
